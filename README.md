@@ -1,18 +1,20 @@
-#Pod Network Operator
+# Pod Network Operator
 
 This project is an attempt to solve CNF networking challenges that can't be addressed quickly by the upstream Kubernetes community and make it available in both OpenShift and Kubernetes.
+
+Install instructions and PoC coming soon!
 
 ---
 #### Warning
 > This is an in progress development. This operator is in its early stages and should not be used in production.
 ---
 
-###Design Proposal
-####Motivation
+### Design Proposal
+#### Motivation
 
 Multiple networking challenges faced by Telco companies and Internet Service Providers working on 5G networks as well as other CNF driven solutions are not addressed by current working Kubernetes CNI standard. Some work is being done to address some of those challenges to be generally available in the long run. This operator aims at short-term solutions for a few use cases that can be solved by a kubernetes operator quickly given the cloud native nature of those while waiting for the official upstream solutions in the long run. It's NOT intended to replace the CNI plugins in any way. Its intention is to enable businesses as fast as we can while we don't have an official long-term solution.
 
-####Some of those challenges are:
+#### Some of those challenges are:
 
 - Runtime network configurations dynamically triggered by CNF applications
 - Use of not so common protocols such as SCTP and its configuration on host
@@ -22,11 +24,11 @@ Multiple networking challenges faced by Telco companies and Internet Service Pro
 - Protect the actual CNI plugin in place on the host as well as the Linux host networking from possible disruptive proprietary tenant's software at host level.
 - Have a common open source repository that can bring all partners to contribute together on a common solution for all those problems
 
-####Scope
+#### Scope
 
 The scope of this project is network configuration, monitoring and tuning at the pod level specially designed with CNF multi-tenant environments in mind. For that to be accomplished any host level configuration will be performed on behalf of the pods where it makes sense without disrupting the main CNI plugin used by the cluster, the main routing table on the host and the rules published on iptables by the current kube-proxy workload or other CNI related pieces of software.
 
-####That said What this operator is not:
+#### That said What this operator is not:
 
 This operator is NOT intended to configure anything cluster wide that affects all pods or an entire node behavior with that intent. Those tasks are already performed by a set of operators such as the ones below:
 
@@ -45,7 +47,7 @@ That said, the pod network operator should remain in a separate kubernetes names
 
 Network configurations will be defined in CRDs and can be seen by all tenants, but can only be used by those who have the proper RBAC permissions for that. No tenant will be able to change them. Only cluster admins.
 
-####Why an Operator?
+#### Why an Operator?
 
 OpenShift nodes are managed by Kubernetes operators. The operators take care of multiple disciplines on OCP nodes. That means that all those configurations are repeatable, reconcilable and visible in a cloud native way via the Kubernetes API extensions.
 
@@ -54,9 +56,9 @@ Here below I put an extract with common features that we gain from using CRDs wi
 Extracted from https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/.
 Beyond all those good features from the extending the kubernetes API we still have the advantage of using the Operator Framework that will give us right away an embedded metrics endpoint to expose the metrics retrieved by the reconciler process as well as all the tooling to seamlessly publish this operator using OLM (Operator Lifecycle Manager) that is already native in OpenShift.
 
-####Architecture
+#### Architecture
 
-####Overview:
+#### Overview:
 
 <img src='docs/img/pod_network_operator.png'></img>
 
@@ -71,7 +73,7 @@ Beyond all those good features from the extending the kubernetes API we still ha
 9. Any kind of tunneling techniques available on Linux and other possible custom packages may be used to build on demand tunnels and connect the CNF pod with other workloads.
 10. All those possible configurations will be completed with whatever is needed at host level as long as it doesn't disrupt the CNI plugin being used, the main host routing table, iptables and other main network stack components. Ideally all configurations will be using separate tables and configurations.
 
-####Fine Grained Permission Control
+#### Fine Grained Permission Control
 
 <img src='docs/img/multi-crd-network-operator.png'></img>
 
@@ -85,7 +87,7 @@ Every network configuration in the system will be available through an individua
 
 The only caveat here is from the management perspective. A new CRD may be created to track down all the information from all the separate pieces of configuration into a single object for visibility and administration.
 
-####The Controller Workflow
+#### The Controller Workflow
 
 <img src='docs/img/pod-network-controller.png'></img>
 
@@ -99,7 +101,7 @@ When it comes to the host it's the same process. We move to PID number 1 and the
 
 For the reconciler function itself it will depend on the logic and configurations that we're trying to achieve. Each different configuration object may require different libraries to perform the configurations.
 
-####Conclusion
+#### Conclusion
 
 We hope this design covers the lack of attention that very special applications in the Telecom and Edge computing domain may require for their next generation containerized cloud native initiatives.
 
