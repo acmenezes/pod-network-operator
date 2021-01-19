@@ -1,0 +1,7 @@
+apiVersion: podnetworking.opdev.io/v1alpha1
+kind: Veth
+metadata:
+  name: veth-sample
+spec:
+  # Add fields here
+  foo: bar
