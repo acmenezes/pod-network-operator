@@ -2,7 +2,7 @@ domain: opdev.io
 layout: go.kubebuilder.io/v3
 multigroup: true
 projectName: pod-network-operator
-repo: github.com/acmenezes/pod-network-operator
+repo: github.com/opdev/pod-network-operator
 resources:
 - crdVersion: v1
   group: podnetworking

@@ -1,4 +1,4 @@
-module github.com/acmenezes/pod-network-operator
+module github.com/opdev/pod-network-operator
 
 go 1.15
 

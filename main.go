@@ -31,8 +31,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	podnetworkingv1alpha1 "github.com/acmenezes/pod-network-operator/apis/podnetworking/v1alpha1"
-	podnetworkingcontrollers "github.com/acmenezes/pod-network-operator/controllers/podnetworking"
+	podnetworkingv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetworking/v1alpha1"
+	podnetworkingcontrollers "github.com/opdev/pod-network-operator/controllers/podnetworking"
 	// +kubebuilder:scaffold:imports
 )
 

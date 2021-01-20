@@ -30,7 +30,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	podnetworkingv1alpha1 "github.com/acmenezes/pod-network-operator/apis/podnetworking/v1alpha1"
+	podnetworkingv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetworking/v1alpha1"
 	// +kubebuilder:scaffold:imports
 )
 

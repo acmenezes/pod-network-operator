@@ -24,7 +24,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	podnetworkingv1alpha1 "github.com/acmenezes/pod-network-operator/apis/podnetworking/v1alpha1"
+	podnetworkingv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetworking/v1alpha1"
 )
 
 // PodNetworkConfigReconciler reconciles a PodNetworkConfig object
