@@ -33,10 +33,9 @@ type VethSpec struct {
 	Parent   string `json:"parent,omitemtpy"`   // name for the parent interface
 	Master   string `json:"master,omitempty"`   // name for the master bridge
 	CIDR     string `json:"cidr,omitempty"`
-
+	MTU      int    `json:"mtu,omitempty"`
 	// For use with the netlink package  may access all types on the ip stack
 	// Index        int                     `json:"index,omitempty"`
-	MTU int `json:"mtu,omitempty"`
 	// TxQLen       int                     `json:"txqlen,omitempty"` // Transmit Queue Length
 	// HardwareAddr net.HardwareAddr        `json:"hardwareAddr,omitempty"`
 	// Flags        net.Flags               `json:"flags,omitempty"`
