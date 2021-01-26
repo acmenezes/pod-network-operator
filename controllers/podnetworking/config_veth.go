@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/containernetworking/plugins/pkg/ns"
-	podconfigv1alpha1 "github.com/opdev/podconfig-operator/apis/podconfig/v1alpha1"
+	podconfigv1alpha1 "github.com/opdev/pod-network-operator/apis/podconfig/v1alpha1"
 	"github.com/vishvananda/netlink"
 )
 
-func createVethForPod(pid string, networkAttachment podconfigv1alpha1.Link) (string, error) {
+func (pid string, networkAttachment podconfigv1alpha1.Link) (string, error) {
 
 	type vethPodConfig struct {
 		podVethName  string

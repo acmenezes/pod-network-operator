@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 
-	podconfigv1alpha1 "github.com/opdev/podconfig-operator/apis/podconfig/v1alpha1"
+	podconfigv1alpha1 "github.com/opdev/pod-network-operator/apis/podconfig/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 )
 

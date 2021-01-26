@@ -50,7 +50,16 @@ type VethReconciler struct {
 func (r *VethReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = r.Log.WithValues("veth", req.NamespacedName)
 
-	// your logic here
+	// get the list of Veths CR for pods managed by PNO
+	// (Gotta put a knob to take control of existing network interfaces for small configs like MTU)
+
+	// check the state of each one and reconcile configurations
+
+	// apply configs - may include many
+
+	// write to status
+
+	// Requeue
 
 	return ctrl.Result{}, nil
 }
