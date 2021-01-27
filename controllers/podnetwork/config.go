@@ -1,9 +1,8 @@
-package controllers
+package podnetwork
 
 import (
 	"fmt"
 
-	podconfigv1alpha1 "github.com/opdev/pod-network-operator/apis/podconfig/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 )
 

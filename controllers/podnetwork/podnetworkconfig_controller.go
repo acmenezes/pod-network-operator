@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package podnetworking
+package podnetwork
 
 import (
 	"context"
@@ -24,7 +24,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	podnetworkingv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetworking/v1alpha1"
+	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 )
 
 // PodNetworkConfigReconciler reconciles a PodNetworkConfig object
@@ -34,9 +34,9 @@ type PodNetworkConfigReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=podnetworking.opdev.io,resources=podnetworkconfigs,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=podnetworking.opdev.io,resources=podnetworkconfigs/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=podnetworking.opdev.io,resources=podnetworkconfigs/finalizers,verbs=update
+// +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=podnetworkconfigs,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=podnetworkconfigs/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=podnetworkconfigs/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -58,6 +58,6 @@ func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Req
 // SetupWithManager sets up the controller with the Manager.
 func (r *PodNetworkConfigReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&podnetworkingv1alpha1.PodNetworkConfig{}).
+		For(&podnetworkv1alpha1.PodNetworkConfig{}).
 		Complete(r)
 }

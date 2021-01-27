@@ -1,4 +1,4 @@
-package controllers
+package podnetwork
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 // Bridge creation logic
 // TODO: verify existence first and only creates if doesn't exist
-// TODO: do the clean up on podconfig deletion - probable use for a finalizer
+// TODO: do the clean up on object deletion - probable use for a finalizer
 func getBridgeOnHost(bridge string) error {
 
 	targetNS, err := ns.GetNS("/tmp/proc/1/ns/net")

@@ -1,5 +1,5 @@
 ## Append samples you want in your CSV to this file as resources ##
 resources:
-- podnetworking_v1alpha1_podnetworkconfig.yaml
-- podnetworking_v1alpha1_veth.yaml
+- podnetwork_v1alpha1_podnetworkconfig.yaml
+- podnetwork_v1alpha1_veth.yaml
 # +kubebuilder:scaffold:manifestskustomizesamples

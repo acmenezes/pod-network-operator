@@ -31,8 +31,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	podnetworkingv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetworking/v1alpha1"
-	podnetworkingcontrollers "github.com/opdev/pod-network-operator/controllers/podnetworking"
+	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
+	podnetworkcontrollers "github.com/opdev/pod-network-operator/controllers/podnetwork"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -44,7 +44,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(podnetworkingv1alpha1.AddToScheme(scheme))
+	utilruntime.Must(podnetworkv1alpha1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -78,17 +78,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&podnetworkingcontrollers.PodNetworkConfigReconciler{
+	if err = (&podnetworkcontrollers.PodNetworkConfigReconciler{
 		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("podnetworking").WithName("PodNetworkConfig"),
+		Log:    ctrl.Log.WithName("controllers").WithName("podnetwork").WithName("PodNetworkConfig"),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PodNetworkConfig")
 		os.Exit(1)
 	}
-	if err = (&podnetworkingcontrollers.VethReconciler{
+	if err = (&podnetworkcontrollers.VethReconciler{
 		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("podnetworking").WithName("Veth"),
+		Log:    ctrl.Log.WithName("controllers").WithName("podnetwork").WithName("Veth"),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Veth")

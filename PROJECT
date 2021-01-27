@@ -5,11 +5,11 @@ projectName: pod-network-operator
 repo: github.com/opdev/pod-network-operator
 resources:
 - crdVersion: v1
-  group: podnetworking
+  group: podnetwork
   kind: PodNetworkConfig
   version: v1alpha1
 - crdVersion: v1
-  group: podnetworking
+  group: podnetwork
   kind: Veth
   version: v1alpha1
 version: 3-alpha

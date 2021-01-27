@@ -27,7 +27,6 @@ import (
 type VethSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-
 	Name     string `json:"name,omitempty"`
 	LinkType string `json:"linkType,omitemtpy"` // temporarily used for veth pair
 	Parent   string `json:"parent,omitemtpy"`   // name for the parent interface

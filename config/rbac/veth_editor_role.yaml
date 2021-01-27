@@ -5,7 +5,7 @@ metadata:
   name: veth-editor-role
 rules:
 - apiGroups:
-  - podnetworking.opdev.io
+  - podnetwork.opdev.io
   resources:
   - veths
   verbs:
@@ -17,7 +17,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - podnetworking.opdev.io
+  - podnetwork.opdev.io
   resources:
   - veths/status
   verbs:

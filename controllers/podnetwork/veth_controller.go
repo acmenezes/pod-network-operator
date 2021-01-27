@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package podnetworking
+package podnetwork
 
 import (
 	"context"
@@ -24,7 +24,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	podnetworkingv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetworking/v1alpha1"
+	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 )
 
 // VethReconciler reconciles a Veth object
@@ -32,23 +32,18 @@ type VethReconciler struct {
 	client.Client
 	Log    logr.Logger
 	Scheme *runtime.Scheme
+	VethList *podnetworkv1alpha1.VethList
 }
 
-// +kubebuilder:rbac:groups=podnetworking.opdev.io,resources=veths,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=podnetworking.opdev.io,resources=veths/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=podnetworking.opdev.io,resources=veths/finalizers,verbs=update
+// +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=veths,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=veths/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=veths/finalizers,verbs=update
 
-// Reconcile is part of the main kubernetes reconciliation loop which aims to
-// move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the Veth object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
-//
-// For more details, check Reconcile and its Result here:
-// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.7.0/pkg/reconcile
+// Reconcile function for Veth CRD instances
 func (r *VethReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = r.Log.WithValues("veth", req.NamespacedName)
+	reqLogger = r.Log.WithName("podnetwork").WithValues("veth", req.NamespacedName)
+
+
 
 	// get the list of Veths CR for pods managed by PNO
 	// (Gotta put a knob to take control of existing network interfaces for small configs like MTU)
@@ -67,6 +62,6 @@ func (r *VethReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 // SetupWithManager sets up the controller with the Manager.
 func (r *VethReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&podnetworkingv1alpha1.Veth{}).
+		For(&podnetworkv1alpha1.Veth{}).
 		Complete(r)
 }

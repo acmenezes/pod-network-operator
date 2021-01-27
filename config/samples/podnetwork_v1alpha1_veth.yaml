@@ -1,4 +1,4 @@
-apiVersion: podnetworking.opdev.io/v1alpha1
+apiVersion: podnetwork.opdev.io/v1alpha1
 kind: Veth
 metadata:
   name: veth-sample
