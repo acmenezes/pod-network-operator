@@ -27,8 +27,8 @@ import (
 	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 )
 
-// PodNetworkConfigReconciler reconciles a PodNetworkConfig object
-type PodNetworkConfigReconciler struct {
+// ConfigReconciler reconciles a PodNetworkConfig object
+type ConfigReconciler struct {
 	client.Client
 	Log    logr.Logger
 	Scheme *runtime.Scheme
