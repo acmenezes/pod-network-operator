@@ -30,8 +30,8 @@ import (
 // VethReconciler reconciles a Veth object
 type VethReconciler struct {
 	client.Client
-	Log    logr.Logger
-	Scheme *runtime.Scheme
+	Log      logr.Logger
+	Scheme   *runtime.Scheme
 	VethList *podnetworkv1alpha1.VethList
 }
 
@@ -43,10 +43,53 @@ type VethReconciler struct {
 func (r *VethReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	reqLogger = r.Log.WithName("podnetwork").WithValues("veth", req.NamespacedName)
 
-
-
 	// get the list of Veths CR for pods managed by PNO
 	// (Gotta put a knob to take control of existing network interfaces for small configs like MTU)
+	r.VethList = &podnetworkv1alpha1.VethList{}
+	err := r.Client.List(context.TODO(), r.VethList)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	if len(r.VethList.Items) <= 0 {
+
+		return ctrl.Result{}, nil
+
+	}
+
+	// setup the finalizers for veth controller
+
+	for _, veth := range r.VethList.Items {
+
+		finalizer := "finalizers.veth.podnetwork.opdev.io"
+		// examine DeletionTimestamp to determine if veth is under deletion
+		if veth.ObjectMeta.DeletionTimestamp.IsZero() {
+
+			// veth is not being deleted, so if it does not have our finalizer,
+			// then lets add the finalizer and update the object. This is equivalent
+			// to registering our finalizer.
+
+			if !containsString(veth.GetFinalizers(), finalizer) {
+				veth.SetFinalizers(append(veth.GetFinalizers(), finalizer))
+				if err := r.Update(context.Background(), &veth); err != nil {
+					return ctrl.Result{}, err
+				}
+			}
+
+		} else {
+
+			// veth is being deleted
+			if containsString(veth.GetFinalizers(), finalizer) {
+
+				// finalizer is present, delete configurations
+
+				// Get the pods with matching labels to veth
+
+			}
+
+		}
+
+	}
 
 	// check the state of each one and reconcile configurations
 
@@ -64,4 +107,24 @@ func (r *VethReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&podnetworkv1alpha1.Veth{}).
 		Complete(r)
+}
+
+// Helper functions to check and remove string from a slice of strings.
+func containsString(slice []string, s string) bool {
+	for _, item := range slice {
+		if item == s {
+			return true
+		}
+	}
+	return false
+}
+
+func removeString(slice []string, s string) (result []string) {
+	for _, item := range slice {
+		if item == s {
+			continue
+		}
+		result = append(result, item)
+	}
+	return
 }
