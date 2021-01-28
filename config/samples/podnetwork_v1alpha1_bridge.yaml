@@ -1,0 +1,7 @@
+apiVersion: podnetwork.opdev.io/v1alpha1
+kind: Bridge
+metadata:
+  name: bridge-sample
+spec:
+  # Add fields here
+  foo: bar

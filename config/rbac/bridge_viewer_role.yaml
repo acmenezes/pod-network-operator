@@ -1,0 +1,20 @@
+# permissions for end users to view bridges.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: bridge-viewer-role
+rules:
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - bridges
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - bridges/status
+  verbs:
+  - get
