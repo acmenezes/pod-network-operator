@@ -20,22 +20,77 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+// Link type for new Pod Interfaces
+type Link struct {
+	// Device Info configurations
+	NamePrefix string `json:"namePrefix,omitempty"`
+
+	// Link Layer configurations
+	LinkType string `json:"linkType,omitemtpy"` // temporarily used for veth pair
+	Parent   string `json:"parent,omitemtpy"`   // name for the parent interface
+	Master   string `json:"master,omitempty"`   // name for the master bridge
+	MTU      int    `json:"mtu,omitempty"`
+
+	// For use with the netlink package  may access all types on the ip stack
+	// Index        int                     `json:"index,omitempty"`
+	// MTU          int                     `json:"mtu,omitempty"`
+	// TxQLen       int                     `json:"txqlen,omitempty"` // Transmit Queue Length
+	// HardwareAddr net.HardwareAddr        `json:"hardwareAddr,omitempty"`
+	// Flags        net.Flags               `json:"flags,omitempty"`
+	// RawFlags     uint32                  `json:"rawFlags,omitempty"`
+	// ParentIndex  int                     `json:"parentIndex,omitempty"` // index of the parent link device
+	// MasterIndex  int                     `json:"masterIndex,omitempty"` // must be the index of a bridge
+	// Alias        string                  `json:"alias,omitempty"`
+	// Statistics   *netlink.LinkStatistics `json:"statistics,omitempty"`
+	// Promisc      int                     `json:"promisc,omitempty"`
+	// Xdp          *netlink.LinkXdp        `json:"xdp,omitempty"`
+	// EncapType    string                  `json:"encapType,omitempty"`
+	// Protinfo     *netlink.Protinfo       `json:"protinfo,omitempty"`
+	// OperState    netlink.LinkOperState   `json:"operState,omitempty"`
+	// NumTxQueues  int                     `json:"numTxQueues,omitempty"`
+	// NumRxQueues  int                     `json:"numRxQueues,omitempty"`
+	// GSOMaxSize   uint32                  `json:"gsoMaxSize,omitempty"`
+	// GSOMaxSegs   uint32                  `json:"gsoMaxSegs,omitempty"`
+	// Vfs          []netlink.VfInfo        `json:"vfs,omitempty"` // virtual functions available on link
+	// Group        uint32                  `json:"group,omitempty"`
+	// Slave        netlink.LinkSlave       `json:"slave,omitempty"`
+
+	// Network Layer configurations
+	CIDR string `json:"cidr,omitempty"`
+}
+
+// CNIInterface is a type to make adjustments on the primary interface
+// provided by the CNI plugin
+type CNIInterface struct {
+
+	// for applications that need a specific MTU
+	// setting other then the CNI configured MTU
+	// this will work on a per pod basis
+	// not cluster wide
+	MTU int `json:"mtu,omitempty"`
+}
 
 // PodNetworkConfigSpec defines the desired state of PodNetworkConfig
 type PodNetworkConfigSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of PodNetworkConfig. Edit PodNetworkConfig_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// List of new links to be configured on Pod
+	Links []Link `json:"links,omitempty"`
 }
+
+// PodNetworkConfigPhase type for status
+type PodNetworkConfigPhase string
+
+// pod network config phases
+const (
+	PodNetworkConfigUnset       PodNetworkConfigPhase = "unset"
+	PodNetworkConfigConfiguring PodNetworkConfigPhase = "configuring"
+	PodNetworkConfigConfigured  PodNetworkConfigPhase = "configured"
+)
 
 // PodNetworkConfigStatus defines the observed state of PodNetworkConfig
 type PodNetworkConfigStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Phase                    PodNetworkConfigPhase `json:"phase,omitempty"`
+	PodNetworkConfigurations []PodNetworkConfig    `json:"PodNetworkConfigs,omitempty"`
 }
 
 // +kubebuilder:object:root=true
