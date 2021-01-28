@@ -9,6 +9,32 @@ rules:
 - apiGroups:
   - podnetwork.opdev.io
   resources:
+  - linktemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - linktemplates/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - linktemplates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
   - podnetworkconfigs
   verbs:
   - create
@@ -28,32 +54,6 @@ rules:
   - podnetwork.opdev.io
   resources:
   - podnetworkconfigs/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - podnetwork.opdev.io
-  resources:
-  - veths
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - podnetwork.opdev.io
-  resources:
-  - veths/finalizers
-  verbs:
-  - update
-- apiGroups:
-  - podnetwork.opdev.io
-  resources:
-  - veths/status
   verbs:
   - get
   - patch
