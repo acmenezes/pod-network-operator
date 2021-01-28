@@ -1,0 +1,20 @@
+# permissions for end users to view linktemplates.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: linktemplate-viewer-role
+rules:
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - linktemplates
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - linktemplates/status
+  verbs:
+  - get
