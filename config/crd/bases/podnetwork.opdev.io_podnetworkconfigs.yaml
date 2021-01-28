@@ -36,13 +36,90 @@ spec:
           spec:
             description: PodNetworkConfigSpec defines the desired state of PodNetworkConfig
             properties:
-              foo:
-                description: Foo is an example field of PodNetworkConfig. Edit PodNetworkConfig_types.go
-                  to remove/update
-                type: string
+              links:
+                description: List of new links to be configured on Pod
+                items:
+                  description: Link type for new Pod Interfaces
+                  properties:
+                    cidr:
+                      description: Network Layer configurations
+                      type: string
+                    linkType:
+                      description: Link Layer configurations
+                      type: string
+                    master:
+                      type: string
+                    mtu:
+                      type: integer
+                    namePrefix:
+                      description: Device Info configurations
+                      type: string
+                    parent:
+                      type: string
+                  required:
+                  - linkType
+                  - parent
+                  type: object
+                type: array
             type: object
           status:
             description: PodNetworkConfigStatus defines the observed state of PodNetworkConfig
+            properties:
+              PodNetworkConfigs:
+                items:
+                  description: PodNetworkConfig is the Schema for the podnetworkconfigs
+                    API
+                  properties:
+                    apiVersion:
+                      description: 'APIVersion defines the versioned schema of this
+                        representation of an object. Servers should convert recognized
+                        schemas to the latest internal value, and may reject unrecognized
+                        values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+                      type: string
+                    kind:
+                      description: 'Kind is a string value representing the REST resource
+                        this object represents. Servers may infer this from the endpoint
+                        the client submits requests to. Cannot be updated. In CamelCase.
+                        More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                      type: string
+                    metadata:
+                      type: object
+                    spec:
+                      description: PodNetworkConfigSpec defines the desired state
+                        of PodNetworkConfig
+                      properties:
+                        links:
+                          description: List of new links to be configured on Pod
+                          items:
+                            description: Link type for new Pod Interfaces
+                            properties:
+                              cidr:
+                                description: Network Layer configurations
+                                type: string
+                              linkType:
+                                description: Link Layer configurations
+                                type: string
+                              master:
+                                type: string
+                              mtu:
+                                type: integer
+                              namePrefix:
+                                description: Device Info configurations
+                                type: string
+                              parent:
+                                type: string
+                            required:
+                            - linkType
+                            - parent
+                            type: object
+                          type: array
+                      type: object
+                    status: {}
+                  type: object
+                type: array
+              phase:
+                description: PodNetworkConfigPhase type for status
+                type: string
             type: object
         type: object
     served: true

@@ -6,20 +6,20 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: linktemplates.podnetwork.opdev.io
+  name: bridges.podnetwork.opdev.io
 spec:
   group: podnetwork.opdev.io
   names:
-    kind: LinkTemplate
-    listKind: LinkTemplateList
-    plural: linktemplates
-    singular: linktemplate
+    kind: Bridge
+    listKind: BridgeList
+    plural: bridges
+    singular: bridge
   scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: LinkTemplate is the Schema for the linktemplates API
+        description: Bridge is the Schema for the bridges API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -34,29 +34,17 @@ spec:
           metadata:
             type: object
           spec:
-            description: LinkTemplateSpec represents the
+            description: BridgeSpec defines the desired state of Bridge
             properties:
-              cidr:
-                description: Network Layer configurations
+              ipAddress:
+                description: Network layer configs
                 type: string
-              linkType:
-                description: Link Layer configurations
+              name:
+                description: Link layer configs
                 type: string
-              master:
-                type: string
-              mtu:
-                type: integer
-              namePrefix:
-                description: Device Info configurations
-                type: string
-              parent:
-                type: string
-            required:
-            - linkType
-            - parent
             type: object
           status:
-            description: LinkTemplateStatus defines the observed state of LinkTemplate
+            description: BridgeStatus defines the observed state of Bridge
             type: object
         type: object
     served: true

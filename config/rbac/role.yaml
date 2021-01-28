@@ -9,6 +9,32 @@ rules:
 - apiGroups:
   - podnetwork.opdev.io
   resources:
+  - bridges
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - bridges/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - bridges/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
   - linktemplates
   verbs:
   - create
