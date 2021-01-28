@@ -42,10 +42,20 @@ type BridgeSpec struct {
 	IPAddress string `json:"ipAddress,omitempty"`
 }
 
+// BridgePhase for status
+type BridgePhase string
+
+// const values for BridgePhase
+const (
+	BridgePhaseUnset       BridgePhase = "unset"
+	BridgePhaseConfiguring BridgePhase = "configuring"
+	BridgePhaseConfigured  BridgePhase = "configured"
+)
+
 // BridgeStatus defines the observed state of Bridge
 type BridgeStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Phase         BridgePhase `json:"phase,omitempty"`
+	BridgeConfigs []Bridge    `json:"bridgeConfigs,omitempty"`
 }
 
 // +kubebuilder:object:root=true
