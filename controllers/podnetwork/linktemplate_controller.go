@@ -32,6 +32,7 @@ type LinkTemplateReconciler struct {
 	client.Client
 	Log    logr.Logger
 	Scheme *runtime.Scheme
+	linkTemplateList *podnetworkv1alpha1.LinkTemplateList
 }
 
 // +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=linktemplates,verbs=get;list;watch;create;update;patch;delete
@@ -48,9 +49,40 @@ type LinkTemplateReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.7.0/pkg/reconcile
 func (r *LinkTemplateReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = r.Log.WithValues("linktemplate", req.NamespacedName)
+	
+	reqLogger = r.Log.WithValues("linktemplate", req.NamespacedName)
+	
+	r.linkTemplateList = &podnetworkv1alpha1.LinkTemplateList{}
+	err := r.Client.List(context.TODO(), r.linkTemplateList)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 
-	// your logic here
+	if len(r.linkTemplateList.Items) <= 0 {
+		return ctrl.Result{}, nil
+	}
+
+	// TODO : UPDATE CONDITIONS/PHASE ON STATUS HERE !!!!!
+
+
+
+	// FOR EACH linkTemplate created identify the pods in the namespace
+	// that will have labels/annotations asking for that particular template
+	// apply the template to each one of them.
+
+	
+	for _, linkTemplate := range r.linkTemplateList.Items {
+
+
+
+
+
+
+
+
+
+
+	}
 
 	return ctrl.Result{}, nil
 }
