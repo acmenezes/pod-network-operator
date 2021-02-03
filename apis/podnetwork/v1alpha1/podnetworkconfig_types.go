@@ -72,6 +72,8 @@ type Eth0 struct {
 
 // PodNetworkConfigSpec defines the desired state of PodNetworkConfig
 type PodNetworkConfigSpec struct {
+	// Name to match with pod labels
+	Name string `json:"name,omitempty"`
 
 	// CNI primary interface adjustments
 	Eth0 Eth0 `json:"eth0,omitempty"`
