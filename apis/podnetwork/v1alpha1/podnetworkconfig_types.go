@@ -84,7 +84,7 @@ type PodNetworkConfigSpec struct {
 
 // PodNetworkConfiguration verified configs for status
 type PodNetworkConfiguration struct {
-	PodName    string   `json:"podName,omitempty`
+	PodName    string   `json:"podName,omitempty"`
 	ConfigList []string `json:"configList,omitempty"`
 }
 
