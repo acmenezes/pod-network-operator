@@ -35,6 +35,7 @@ type PodNetworkConfigReconciler struct {
 	Log                  logr.Logger
 	Scheme               *runtime.Scheme
 	podNetworkConfigList *podnetworkv1alpha1.PodNetworkConfigList
+	podNetworkConfig     *podnetworkv1alpha1.PodNetworkConfig
 }
 
 // +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=podnetworkconfigs,verbs=get;list;watch;create;update;patch;delete
@@ -59,7 +60,7 @@ func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Req
 	}
 	// TODO: Update the status field with conditions while creating the new instance
 
-	for _, podNetworkConfig := range r.podNetworkConfigList.Items {
+	for _, r.podNetworkConfig = range r.podNetworkConfigList.Items {
 		// Check the finalizer for all of them and set finalizers for the ones that don't have it
 
 		finalizer := "podnetworkconfig.finalizers.opdev.io"
