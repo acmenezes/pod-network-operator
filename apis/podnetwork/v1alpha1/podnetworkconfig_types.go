@@ -82,6 +82,12 @@ type PodNetworkConfigSpec struct {
 	Links []Link `json:"links,omitempty"`
 }
 
+// PodNetworkConfiguration verified configs for status
+type PodNetworkConfiguration struct {
+	PodName    string   `json:"podName,omitempty`
+	ConfigList []string `json:"configList,omitempty"`
+}
+
 // PodNetworkConfigPhase type for status
 type PodNetworkConfigPhase string
 
@@ -94,8 +100,8 @@ const (
 
 // PodNetworkConfigStatus defines the observed state of PodNetworkConfig
 type PodNetworkConfigStatus struct {
-	Phase                    PodNetworkConfigPhase `json:"phase,omitempty"`
-	PodNetworkConfigurations []PodNetworkConfig    `json:"PodNetworkConfigs,omitempty"`
+	Phase                    PodNetworkConfigPhase     `json:"phase,omitempty"`
+	PodNetworkConfigurations []PodNetworkConfiguration `json:"PodNetworkConfigs,omitempty"`
 }
 
 // +kubebuilder:object:root=true
