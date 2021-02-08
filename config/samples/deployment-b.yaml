@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cnf-example-b
+  namespace: cnf-test
+  labels:
+    podconfig: podnetwork-sample-b
+spec:
+  selector:
+    matchLabels:
+      podconfig: podnetwork-sample-b
+  replicas: 2
+  template:
+    metadata:
+      name: cnf-example-b
+      namespace: cnf-test
+      labels:
+        podconfig: podnetwork-sample-b
+    spec:
+      serviceAccountName: default
+      containers:
+      - command:
+        - /bin/bash 
+        - -c 
+        - --
+        args:
+        - "while true; do sleep 30; done;"
+        image: "nicolaka/netshoot:latest"
+        imagePullPolicy: Always
+        name: cnf-example
