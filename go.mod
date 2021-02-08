@@ -11,6 +11,7 @@ require (
 	github.com/vishvananda/netlink v1.1.1-0.20201029203352-d40f9887b852
 	golang.org/x/mod v0.4.0 // indirect
 	golang.org/x/tools v0.1.1-0.20210201201750-4d4ee958a9b7 // indirect
+	golang.org/x/tools/gopls v0.6.5 // indirect
 	google.golang.org/grpc v1.27.1
 	honnef.co/go/tools v0.0.1-2020.1.6 // indirect
 	k8s.io/api v0.19.2

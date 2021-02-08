@@ -3,5 +3,6 @@ kind: PodNetworkConfig
 metadata:
   name: podnetworkconfig-sample
 spec:
-  # Add fields here
-  foo: bar
+  Name: mtu-config-test
+  Eth0:
+    MTU: 1500
