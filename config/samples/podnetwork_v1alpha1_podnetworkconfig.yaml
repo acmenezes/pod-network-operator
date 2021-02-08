@@ -1,8 +1,9 @@
 apiVersion: podnetwork.opdev.io/v1alpha1
 kind: PodNetworkConfig
 metadata:
-  name: podnetworkconfig-sample
+  name: podnetwork-sample-a
 spec:
-  Name: mtu-config-test
+  Name: podnetwork-sample-a
   Eth0:
-    MTU: 1500
+    Eth0:
+      MTU: 1500

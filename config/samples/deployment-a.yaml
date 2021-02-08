@@ -4,18 +4,18 @@ metadata:
   name: cnf-example-a
   namespace: cnf-test
   labels:
-    podconfig: podnetwork-sample-a
+    podNetworkConfig: podnetwork-sample-a
 spec:
   selector:
     matchLabels:
-      podconfig: podnetwork-sample-a
+      podNetworkConfig: podnetwork-sample-a
   replicas: 2
   template:
     metadata:
       name: cnf-example-a
       namespace: cnf-test
       labels:
-        podconfig: podnetwork-sample-a
+        podNetworkConfig: podnetwork-sample-a
     spec:
       serviceAccountName: default
       containers:
