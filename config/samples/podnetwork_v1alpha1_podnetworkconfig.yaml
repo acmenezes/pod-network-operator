@@ -4,6 +4,5 @@ metadata:
   name: podnetwork-sample-a
 spec:
   Name: podnetwork-sample-a
-  Eth0:
-    Eth0:
-      MTU: 1500
+  eth0:
+      mtu: 1500
