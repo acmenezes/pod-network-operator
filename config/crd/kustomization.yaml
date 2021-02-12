@@ -3,8 +3,6 @@
 # It should be run by config/default
 resources:
 - bases/podnetwork.opdev.io_podnetworkconfigs.yaml
-- bases/podnetwork.opdev.io_veths.yaml
-- bases/podnetwork.opdev.io_linktemplates.yaml
 - bases/podnetwork.opdev.io_bridges.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 

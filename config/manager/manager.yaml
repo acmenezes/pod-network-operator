@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   labels:
     control-plane: controller-manager
-  name: system
+  name: cnf-test
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -45,6 +45,8 @@ spec:
             port: 8081
           initialDelaySeconds: 5
           periodSeconds: 10
+        securityContext:
+          privileged: true          
         resources:
           limits:
             cpu: 500m
