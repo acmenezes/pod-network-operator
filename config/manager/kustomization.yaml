@@ -13,4 +13,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: quay.io/opdev/pod-network-operator
-  newTag: latest
+  newTag: 0.0.1

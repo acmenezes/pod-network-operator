@@ -9,7 +9,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pod-network-operator
-  namespace: system
+  namespace: cnf-test
   labels:
     control-plane: controller-manager
 spec:
@@ -22,14 +22,13 @@ spec:
       labels:
         control-plane: controller-manager
     spec:
-      securityContext:
-        runAsUser: 65532
+      serviceAccountName: pod-network-operator-sa
       containers:
       - command:
         - /manager
         args:
         - --leader-elect
-        image: quay.io/opdev/pod-network-operator:latest
+        image: quay.io/opdev/pod-network-operator:0.0.1
         name: pod-network-operator
         securityContext:
           allowPrivilegeEscalation: false
@@ -54,4 +53,20 @@ spec:
           requests:
             cpu: 500m
             memory: 200Mi
+        volumeMounts:
+          - mountPath: /tmp/proc
+            name: proc
+          - mountPath: /var/run/crio/crio.sock
+            name: crio-sock
+      volumes:
+      - name: proc
+        hostPath:
+          # Mounting the proc file system to get process namespaces
+          path: /proc
+          type: Directory
+      - name: crio-sock
+        hostPath:
+          # Mounting the proc file system to get process namespaces
+          path: /var/run/crio/crio.sock
+          type: Socket            
       terminationGracePeriodSeconds: 10
