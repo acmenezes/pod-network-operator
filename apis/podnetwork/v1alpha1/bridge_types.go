@@ -55,7 +55,7 @@ const (
 // BridgeStatus defines the observed state of Bridge
 type BridgeStatus struct {
 	Phase         BridgePhase `json:"phase,omitempty"`
-	BridgeConfigs []Bridge    `json:"bridgeConfigs,omitempty"`
+	BridgeConfigs []string    `json:"bridgeConfigs,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -103,10 +103,8 @@ func (in *BridgeStatus) DeepCopyInto(out *BridgeStatus) {
 	*out = *in
 	if in.BridgeConfigs != nil {
 		in, out := &in.BridgeConfigs, &out.BridgeConfigs
-		*out = make([]Bridge, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 }
 
