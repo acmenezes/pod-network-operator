@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cnf-example-b
-  namespace: cnf-test
+  namespace: cnf-telco
   labels:
     podconfig: podnetwork-sample-b
 spec:
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       name: cnf-example-b
-      namespace: cnf-test
+      namespace: cnf-telco
       labels:
         podconfig: podnetwork-sample-b
     spec:

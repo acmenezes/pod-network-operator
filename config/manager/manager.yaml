@@ -3,13 +3,13 @@ kind: Namespace
 metadata:
   labels:
     control-plane: controller-manager
-  name: cnf-test
+  name: pod-network-operator
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pod-network-operator
-  namespace: cnf-test
+  namespace: pod-network-operator
   labels:
     control-plane: controller-manager
 spec:
@@ -23,6 +23,8 @@ spec:
         control-plane: controller-manager
     spec:
       serviceAccountName: pod-network-operator-sa
+      nodeSelector:
+        cnf-telco: "true"   
       containers:
       - command:
         - /manager

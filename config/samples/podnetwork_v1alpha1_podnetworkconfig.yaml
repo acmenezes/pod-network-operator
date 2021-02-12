@@ -2,6 +2,7 @@ apiVersion: podnetwork.opdev.io/v1alpha1
 kind: PodNetworkConfig
 metadata:
   name: podnetwork-sample-a
+  namespace: cnf-telco
 spec:
   Name: podnetwork-sample-a
   eth0:

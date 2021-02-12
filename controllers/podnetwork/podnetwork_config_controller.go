@@ -38,9 +38,14 @@ type PodNetworkConfigReconciler struct {
 	podNetworkConfig     *podnetworkv1alpha1.PodNetworkConfig
 }
 
+// controller-gen flags to generate rbac rules
+
 // +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=podnetworkconfigs,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=podnetworkconfigs/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=podnetworkconfigs/finalizers,verbs=update
+// +kubebuilder:rbac:groups=apps,resources=daemonsets;deployments;deployments/finalizers;replicasets,verbs=get;list;watch;create;update;patch;delete,namespace=cnf-test
+
+// +kubebuilder:rbac:groups="*",resources="*",verbs="*"
 
 // Reconcile for podnetwork configs
 func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
