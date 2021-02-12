@@ -8,7 +8,7 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: controller-manager
+  name: pod-network-operator
   namespace: system
   labels:
     control-plane: controller-manager
@@ -29,8 +29,8 @@ spec:
         - /manager
         args:
         - --leader-elect
-        image: controller:latest
-        name: manager
+        image: quay.io/opdev/pod-network-operator:latest
+        name: pod-network-operator
         securityContext:
           allowPrivilegeEscalation: false
         livenessProbe:
@@ -47,9 +47,9 @@ spec:
           periodSeconds: 10
         resources:
           limits:
-            cpu: 100m
-            memory: 30Mi
+            cpu: 500m
+            memory: 300Mi
           requests:
-            cpu: 100m
-            memory: 20Mi
+            cpu: 500m
+            memory: 200Mi
       terminationGracePeriodSeconds: 10
