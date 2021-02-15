@@ -78,6 +78,48 @@ pod-network-operator-7c9bd6dbb8-cqtj9   1/1     Running   0          23m
 
 At this point the operator will be watching the tenant target namespace. Now follow the tenant's instructions on how to request new network configurations for Pods.
 
+## Running a Sample Deployment to Test the Operator
+
+It's important to understand that this operator doesn't manage any Deployments, DeamonSets, StatefulSets or Pods for the tenant. It applies and reconciles new network configurations for them based on the labels applied on those resoure
+
+Under config/samples/ we find deployment-a.yaml that look like this:
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cnf-example-a
+  namespace: cnf-telco
+  labels:
+    podNetworkConfig: podnetwork-sample-a
+spec:
+  selector:
+    matchLabels:
+      podNetworkConfig: podnetwork-sample-a
+  replicas: 2
+  template:
+    metadata:
+      name: cnf-example-a
+      namespace: cnf-telco
+      labels:
+        podNetworkConfig: podnetwork-sample-a
+    spec:
+      serviceAccountName: cnf-telco-sa
+      containers:
+      - command:
+        - /bin/bash 
+        - -c 
+        - --
+        args:
+        - "while true; do sleep 30; done;"
+        image: "nicolaka/netshoot:latest"
+        imagePullPolicy: Always
+        name: cnf-example
+      nodeSelector:
+        cnf-telco: "true"        
+```
+
+
 ## Installing or Programatically Requesting New Network Configurations:
 
 #### Changing Eth0 Primary Interface's Configuration
