@@ -67,7 +67,7 @@ func (r *PodNetworkConfigReconciler) ResetCNIIfDefaults(pid string) error {
 		return fmt.Errorf("Error getting Pod network namespace: %v", err)
 	}
 
-	// The primary interface is named eth0 by default in Openshift
+	// The primary interface is named eth0 by default in OpenShift
 
 	cniInterface := "eth0"
 
