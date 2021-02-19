@@ -86,7 +86,48 @@ Under config/samples/ we find deployment-a.yaml that look like this:
 
 <img src='docs/img/net_config_sample_deploy.png'></img>
 
+
+By running `oc apply -f config/samples/deployment-a.yaml` logged in as a cluster admin we can configure both the CNF deployment and its needed RBAC configurations just for the sake of testing.
+
+For real use in production environments the RBAC configurations should be provided by the cluster admin and/or the Operator Lifecycle Manager and deployments and application can be created by the tenant.
+
+The result of this sample is a couple of pods running in the cnf-telco namespace:
+
+`oc get pods -n cnf-telco`
+
+```
+oc get pods -n cnf-telco
+NAME                             READY   STATUS    RESTARTS   AGE
+cnf-example-a-7cdb5b9fff-cr2pv   1/1     Running   0          44h
+cnf-example-a-7cdb5b9fff-tjrkk   1/1     Running   0          44h
+```
+
+They will be used throughout multiple examples.
+
 ## Installing or Programatically Requesting New Network Configurations:
 
 #### Changing Eth0 Primary Interface's Configuration
 
+Once we have our operator in place, supposedly deployed by the cluster's administrator or the platform owner, and also the CNF deployment running on a tenant namespace properly setup with tenant's permissions we may try requesting new network configurations for the Pods.
+
+The first use case explored here is changing the Pod's MTU size in order to avoid heavy packet fragmentation on third party networks connecting clusters across different regions.
+
+For that we may create a podNetworkConfig that looks like below:
+```
+apiVersion: podnetwork.opdev.io/v1alpha1
+kind: PodNetworkConfig
+metadata:
+  name: podnetwork-sample-a
+  namespace: cnf-telco
+spec:
+  Name: podnetwork-sample-a
+  eth0:
+      mtu: 1500
+
+```
+
+In order to simulate a tenant with low privileges we may run:
+
+`oc apply -f config/samples/podnetwork_v1alpha1_podnetworkconfig.yaml --as=system:serviceaccount:cnf-telco:cnf-telco-sa`
+
+The `--as` parameter allow us to impersonat the service account created for the tenant and run with it's privileges.
