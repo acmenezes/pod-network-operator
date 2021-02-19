@@ -80,7 +80,7 @@ At this point the operator will be watching the tenant target namespace. Now fol
 
 ## Running a Sample Deployment to Test the Operator
 
-It's important to understand that this operator doesn't manage any Deployments, DeamonSets, StatefulSets or Pods for the tenant. It applies and reconciles new network configurations for them based on the labels applied on those resoure
+It's important to understand that this operator doesn't manage any Deployments, DeamonSets, StatefulSets or Pods for the tenant. It applies and reconciles new network configurations for them based on the labels applied on those resources.
 
 Under config/samples/ we find deployment-a.yaml that look like this:
 
@@ -124,4 +124,3 @@ spec:
 
 #### Changing Eth0 Primary Interface's Configuration
 
-Coming soon!

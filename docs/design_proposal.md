@@ -49,7 +49,7 @@ Beyond all those good features from the extending the kubernetes API we still ha
 
 #### Overview:
 
-<img src='docs/img/pod_network_operator.png'></img>
+<img src='img/pod_network_operator.png'></img>
 
 1. Ideally a CNF operator spins up pods to run CNF applications in the tenants namespace with the proper permissions and running with the restricted SCC. It could be deployed by helm or yaml manifests as well;
 2. The CNF requires privileged pod network configurations. Those could be at initialization time or runtime. The operator or the application itself may request those configurations as part of the deployment using basic yaml manifests or dynamically at CNFs lifetime on demand according to its own conditions by sending an update or create request to the kubeapi-server with the network configuration CRD.
@@ -58,13 +58,13 @@ Beyond all those good features from the extending the kubernetes API we still ha
 5. Any configuration changes, creation or deletion will be watched and received by the pod network operator triggering the reconciler;
 6. It may make any configuration on network interfaces provided by Linux or other available packages on behalf of the pod;
 7. It may pass on sockets to the pods as needed without granting privileged access to that pod if it make sense to do so;
-8. It change routes in the pods context to complete its configuration if needed;
+8. It may change routes in the pods context to complete its configuration if needed;
 9. Any kind of tunneling techniques available on Linux and other possible custom packages may be used to build on demand tunnels and connect the CNF pod with other workloads.
 10. All those possible configurations will be completed with whatever is needed at host level as long as it doesn't disrupt the CNI plugin being used, the main host routing table, iptables and other main network stack components. Ideally all configurations will be using separate tables and configurations.
 
 #### Fine Grained Permission Control
 
-<img src='docs/img/multi-crd-network-operator.png'></img>
+<img src='img/multi-crd-network-operator.png'></img>
 
 Every network configuration in the system will be available through an individual custom resource definition. That allows for fine grained RBAC rules to be implemented on top of them giving the administrators the freedom to grant or deny access to very specific actions on pod networking creating plenty of possibilities for multi-tenant environments setups.
 
@@ -78,7 +78,7 @@ The only caveat here is from the management perspective. A new CRD may be create
 
 #### The Controller Workflow
 
-<img src='docs/img/pod-network-controller.png'></img>
+<img src='img/pod-network-controller.png'></img>
 
 The controller workflow represented in the diagram above shows simplified steps on how the reconciliation process occurs. A few steps before actually running the configuration functions it's necessary to find out what pods need new configurations, grab the first container ID from the Pod resource object and pass it as a parameter with a ContainerStatusRequest to CRI-O. From the ContainerStatusResponse we can get the process ID for that container. It's the same process that crictl inspect does.
 

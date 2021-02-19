@@ -1,4 +1,9 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: cnf-telco
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cnf-telco-sa
@@ -12,9 +17,9 @@ metadata:
   namespace: cnf-telco
 rules:
 - apiGroups:
-  - podnetwork.opdev.io/v1alpha1
+  - podnetwork.opdev.io
   resources:
-  - podnetworkconfig
+  - podnetworkconfigs
   verbs:
   - create
   - delete
@@ -22,13 +27,26 @@ rules:
   - list
   - patch
   - update
-  - watch  
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - podnetworkconfigs/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - podnetworkconfigs/status
+  verbs:
+  - get
+  - patch
+  - update 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: pod-network-config-rolebinding
-  namespace: cnf-telco
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
