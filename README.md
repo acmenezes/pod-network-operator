@@ -84,41 +84,7 @@ It's important to understand that this operator doesn't manage any Deployments, 
 
 Under config/samples/ we find deployment-a.yaml that look like this:
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: cnf-example-a
-  namespace: cnf-telco
-  labels:
-    podNetworkConfig: podnetwork-sample-a
-spec:
-  selector:
-    matchLabels:
-      podNetworkConfig: podnetwork-sample-a
-  replicas: 2
-  template:
-    metadata:
-      name: cnf-example-a
-      namespace: cnf-telco
-      labels:
-        podNetworkConfig: podnetwork-sample-a
-    spec:
-      serviceAccountName: cnf-telco-sa
-      containers:
-      - command:
-        - /bin/bash 
-        - -c 
-        - --
-        args:
-        - "while true; do sleep 30; done;"
-        image: "nicolaka/netshoot:latest"
-        imagePullPolicy: Always
-        name: cnf-example
-      nodeSelector:
-        cnf-telco: "true"        
-```
-
+<img src='docs/img/net_config_sample_deploy.png'></img>
 
 ## Installing or Programatically Requesting New Network Configurations:
 
