@@ -49,7 +49,7 @@ Beyond all those good features from the extending the kubernetes API we still ha
 
 #### Overview:
 
-<img src='docs/img/pod_network_operator.png'></img>
+<img src='img/pod_network_operator.png'></img>
 
 1. Ideally a CNF operator spins up pods to run CNF applications in the tenants namespace with the proper permissions and running with the restricted SCC. It could be deployed by helm or yaml manifests as well;
 2. The CNF requires privileged pod network configurations. Those could be at initialization time or runtime. The operator or the application itself may request those configurations as part of the deployment using basic yaml manifests or dynamically at CNFs lifetime on demand according to its own conditions by sending an update or create request to the kubeapi-server with the network configuration CRD.
@@ -64,7 +64,7 @@ Beyond all those good features from the extending the kubernetes API we still ha
 
 #### Fine Grained Permission Control
 
-<img src='docs/img/multi-crd-network-operator.png'></img>
+<img src='img/multi-crd-network-operator.png'></img>
 
 Every network configuration in the system will be available through an individual custom resource definition. That allows for fine grained RBAC rules to be implemented on top of them giving the administrators the freedom to grant or deny access to very specific actions on pod networking creating plenty of possibilities for multi-tenant environments setups.
 
@@ -78,7 +78,7 @@ The only caveat here is from the management perspective. A new CRD may be create
 
 #### The Controller Workflow
 
-<img src='docs/img/pod-network-controller.png'></img>
+<img src='img/pod-network-controller.png'></img>
 
 The controller workflow represented in the diagram above shows simplified steps on how the reconciliation process occurs. A few steps before actually running the configuration functions it's necessary to find out what pods need new configurations, grab the first container ID from the Pod resource object and pass it as a parameter with a ContainerStatusRequest to CRI-O. From the ContainerStatusResponse we can get the process ID for that container. It's the same process that crictl inspect does.
 

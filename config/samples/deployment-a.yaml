@@ -1,22 +1,21 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: cnf-telco
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cnf-telco-sa
   namespace: cnf-telco
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   creationTimestamp: null
   name: pod-network-config-role
   namespace: cnf-telco
 rules:
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - '*'
 - apiGroups:
   - podnetwork.opdev.io
   resources:
@@ -45,12 +44,12 @@ rules:
   - update 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   name: pod-network-config-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: pod-network-config-role
 subjects:
 - kind: ServiceAccount
