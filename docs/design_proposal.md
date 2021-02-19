@@ -58,7 +58,7 @@ Beyond all those good features from the extending the kubernetes API we still ha
 5. Any configuration changes, creation or deletion will be watched and received by the pod network operator triggering the reconciler;
 6. It may make any configuration on network interfaces provided by Linux or other available packages on behalf of the pod;
 7. It may pass on sockets to the pods as needed without granting privileged access to that pod if it make sense to do so;
-8. It change routes in the pods context to complete its configuration if needed;
+8. It may change routes in the pods context to complete its configuration if needed;
 9. Any kind of tunneling techniques available on Linux and other possible custom packages may be used to build on demand tunnels and connect the CNF pod with other workloads.
 10. All those possible configurations will be completed with whatever is needed at host level as long as it doesn't disrupt the CNI plugin being used, the main host routing table, iptables and other main network stack components. Ideally all configurations will be using separate tables and configurations.
 
