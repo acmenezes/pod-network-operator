@@ -71,7 +71,7 @@ kind: Role
 metadata:
   creationTimestamp: null
   name: manager-role
-  namespace: cnf-test
+  namespace: pod-network-operator
 rules:
 - apiGroups:
   - apps
