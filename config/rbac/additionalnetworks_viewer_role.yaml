@@ -1,0 +1,20 @@
+# permissions for end users to view additionalnetworks.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: additionalnetworks-viewer-role
+rules:
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - additionalnetworks
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - additionalnetworks/status
+  verbs:
+  - get

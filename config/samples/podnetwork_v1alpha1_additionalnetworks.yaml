@@ -1,0 +1,7 @@
+apiVersion: podnetwork.opdev.io/v1alpha1
+kind: AdditionalNetworks
+metadata:
+  name: additionalnetworks-sample
+spec:
+  # Add fields here
+  foo: bar
