@@ -106,7 +106,7 @@ They will be used throughout multiple examples.
 
 ## Installing or Programatically Requesting New Network Configurations:
 
-Bellow we can find a list of use cases. 
+Bellow we can find an initial feature list that covers a variety of use cases. 
 
 For each one added a documentation page will also be available.
 
