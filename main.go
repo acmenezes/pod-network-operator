@@ -98,6 +98,14 @@ func main() {
 	// 	setupLog.Error(err, "unable to create controller", "controller", "Bridge")
 	// 	os.Exit(1)
 	// }
+	if err = (&podnetworkcontrollers.PrimaryNetworkReconciler{
+		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("podnetwork").WithName("PrimaryNetwork"),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "PrimaryNetwork")
+		os.Exit(1)
+	}
 	// +kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("health", healthz.Ping); err != nil {

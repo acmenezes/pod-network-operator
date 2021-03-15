@@ -1,22 +1,26 @@
 domain: opdev.io
 layout: go.kubebuilder.io/v3
 multigroup: true
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
 projectName: pod-network-operator
 repo: github.com/opdev/pod-network-operator
 resources:
 - api:
     crdVersion: v1
-    # TODO(user): Uncomment the below line if this resource's CRD is namespace scoped, else delete it.
-    # namespaced: true
-  # TODO(user): Uncomment the below line if this resource implements a controller, else delete it.
-  # controller: true
   domain: opdev.io
   group: podnetwork
   kind: PodNetworkConfig
-  # TODO(user): Update the package path for your API if the below value is incorrect.
+  path: github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: opdev.io
+  group: podnetwork
+  kind: PrimaryNetwork
   path: github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1
   version: v1alpha1
 version: "3"
-plugins:
-  manifests.sdk.operatorframework.io/v2: {}
-  scorecard.sdk.operatorframework.io/v2: {}
