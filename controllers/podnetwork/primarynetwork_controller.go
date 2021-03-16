@@ -38,19 +38,39 @@ type PrimaryNetworkReconciler struct {
 //+kubebuilder:rbac:groups=podnetwork.opdev.io,resources=primarynetworks/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=podnetwork.opdev.io,resources=primarynetworks/finalizers,verbs=update
 
-// Reconcile is part of the main kubernetes reconciliation loop which aims to
-// move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the PrimaryNetwork object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
-//
-// For more details, check Reconcile and its Result here:
-// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.7.2/pkg/reconcile
 func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = r.Log.WithValues("primarynetwork", req.NamespacedName)
 
-	// your logic here
+	// Loop through the list of pods with primary newtworks matching labels
+
+		// call finalizer on primary network configuration resource
+
+			// update primary network status
+
+			// log new primary network configuration requested
+
+			// begin configuration task
+
+				// Beginning network configuration task
+
+				// Loop through configuration fields requested
+
+					// log configuration item in progress
+					
+					// update status condition InProgress reason item X being configured
+					
+					// call appropriate link configuration function for item passing Pod as parameter
+
+					// check error on return
+						// log error or
+						// log configuration Pod name, field and value - succeeded
+
+					// update status configuration list adding Pod name, field and value configured
+
+			// End configuration task
+
+
+
 
 	return ctrl.Result{}, nil
 }

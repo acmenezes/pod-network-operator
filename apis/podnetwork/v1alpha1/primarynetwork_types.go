@@ -48,10 +48,16 @@ type Condition struct {
 	LastTransitionTime string `json:"lastTransitionTime,omitempty"`
 }
 
+type configuration struct{
+	PodName string
+	ConfigList []map[string]string
+}
+
 // PrimaryNetworkStatus defines the observed state of PrimaryNetwork
 type PrimaryNetworkStatus struct {
 
 	Conditions []Condition `json:"condition,omitempty"`
+	Configurations []Configuration `json:"configurations,omitempty"`
 }
 
 //+kubebuilder:object:root=true
