@@ -30,8 +30,9 @@ import (
 // PrimaryNetworkReconciler reconciles a PrimaryNetwork object
 type PrimaryNetworkReconciler struct {
 	client.Client
-	Log    logr.Logger
-	Scheme *runtime.Scheme
+	Log            logr.Logger
+	Scheme         *runtime.Scheme
+	PrimaryNetwork *podnetworkv1alpha1.PrimaryNetwork
 }
 
 //+kubebuilder:rbac:groups=podnetwork.opdev.io,resources=primarynetworks,verbs=get;list;watch;create;update;patch;delete
@@ -43,34 +44,31 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 
 	// Loop through the list of pods with primary newtworks matching labels
 
-		// call finalizer on primary network configuration resource
+	// call finalizer on primary network configuration resource
 
-			// update primary network status
+	// update primary network status
 
-			// log new primary network configuration requested
+	// log new primary network configuration requested
 
-			// begin configuration task
+	// begin configuration task
 
-				// Beginning network configuration task
+	// Beginning network configuration task
 
-				// Loop through configuration fields requested
+	// Loop through configuration fields requested
 
-					// log configuration item in progress
-					
-					// update status condition InProgress reason item X being configured
-					
-					// call appropriate link configuration function for item passing Pod as parameter
+	// log configuration item in progress
 
-					// check error on return
-						// log error or
-						// log configuration Pod name, field and value - succeeded
+	// update status condition InProgress reason item X being configured
 
-					// update status configuration list adding Pod name, field and value configured
+	// call appropriate link configuration function for item passing Pod as parameter
 
-			// End configuration task
+	// check error on return
+	// log error or
+	// log configuration Pod name, field and value - succeeded
 
+	// update status configuration list adding Pod name, field and value configured
 
-
+	// End configuration task
 
 	return ctrl.Result{}, nil
 }

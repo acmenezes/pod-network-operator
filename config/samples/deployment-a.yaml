@@ -41,7 +41,33 @@ rules:
   verbs:
   - get
   - patch
-  - update 
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - primarynetworks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - primarynetworks/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - primarynetworks/status
+  verbs:
+  - get
+  - patch
+  - update   
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding

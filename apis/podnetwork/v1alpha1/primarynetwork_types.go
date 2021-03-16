@@ -18,45 +18,44 @@ package v1alpha1
 
 import (
 	"net"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // PrimaryNetworkSpec for extra configurations on the primary network
 // provided by the CNI plugin
 type PrimaryNetworkSpec struct {
-
-	MTU int `json:"mtu,omitempty"`
-	TxQLen int `json:"txQLen,omitempty"`
+	MTU          int              `json:"mtu,omitempty"`
+	TxQLen       int              `json:"txQLen,omitempty"`
 	HardwareAddr net.HardwareAddr `json:"HardwareAddr,omitempty"`
-
 }
 
 type ConditionType string
 
 const (
-	ConditionTypeReady	ConditionType = "Ready"
+	ConditionTypeReady      ConditionType = "Ready"
 	ConditionTypeInProgress ConditionType = "InProgress"
-	ConditionTypeFailed ConditionType = "Failed"
-	ConditionTypeUnknown ConditionType = "Unknown"
+	ConditionTypeFailed     ConditionType = "Failed"
+	ConditionTypeUnknown    ConditionType = "Unknown"
 )
 
 type Condition struct {
-	Type ConditionType `json:"type,omitempty"`
-	Status bool `json:"status,omitemtpy"`
-	Reason string `json:"reason,omitempty"`
-	LastHeartbeatTime string `json:"lastHeartbeatTime,omitempty"`
-	LastTransitionTime string `json:"lastTransitionTime,omitempty"`
+	Type               ConditionType `json:"type,omitempty"`
+	Status             bool          `json:"status,omitemtpy"`
+	Reason             string        `json:"reason,omitempty"`
+	LastHeartbeatTime  string        `json:"lastHeartbeatTime,omitempty"`
+	LastTransitionTime string        `json:"lastTransitionTime,omitempty"`
 }
 
-type configuration struct{
-	PodName string
-	ConfigList []map[string]string
+type Configuration struct {
+	PodName         string              `json:"podName,omitempty"`
+	CurrentConfigs  []map[string]string `json:"currentConfigs,omitempty"`
+	PreviousConfigs []map[string]string `json:"previousConfigs,omitemtpy"`
 }
 
 // PrimaryNetworkStatus defines the observed state of PrimaryNetwork
 type PrimaryNetworkStatus struct {
-
-	Conditions []Condition `json:"condition,omitempty"`
+	Conditions     []Condition     `json:"condition,omitempty"`
 	Configurations []Configuration `json:"configurations,omitempty"`
 }
 
