@@ -40,7 +40,6 @@ const (
 	ConditionTypeUnknown ConditionType = "Unknown"
 )
 
-
 type Condition struct {
 	Type ConditionType `json:"type,omitempty"`
 	Status bool `json:"status,omitemtpy"`
@@ -49,15 +48,10 @@ type Condition struct {
 	LastTransitionTime string `json:"lastTransitionTime,omitempty"`
 }
 
-
-
 // PrimaryNetworkStatus defines the observed state of PrimaryNetwork
 type PrimaryNetworkStatus struct {
 
-	Conditions []
-	
-
-
+	Conditions []Condition `json:"condition,omitempty"`
 }
 
 //+kubebuilder:object:root=true
