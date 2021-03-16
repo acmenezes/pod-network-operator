@@ -17,25 +17,47 @@ limitations under the License.
 package v1alpha1
 
 import (
+	net
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
-// PrimaryNetworkSpec defines the desired state of PrimaryNetwork
+// PrimaryNetworkSpec for extra configurations on the primary network
+// provided by the CNI plugin
 type PrimaryNetworkSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of PrimaryNetwork. Edit primarynetwork_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	MTU int `json:"mtu,omitempty"`
+	TxQLen int `json:"txQLen,omitempty"`
+	HardwareAddr net.HardwareAddr `json:"HardwareAddr,omitempty"`
+
 }
+
+type ConditionType string
+
+const (
+	ConditionTypeReady	ConditionType = "Ready"
+	ConditionTypeInProgress ConditionType = "InProgress"
+	ConditionTypeFailed ConditionType = "Failed"
+	ConditionTypeUnknown ConditionType = "Unknown"
+)
+
+
+type Condition struct {
+	Type ConditionType `json:"type,omitempty"`
+	Status bool `json:"status,omitemtpy"`
+	Reason string `json:"reason,omitempty"`
+	LastHeartbeatTime string `json:"lastHeartbeatTime,omitempty"`
+	LastTransitionTime string `json:"lastTransitionTime,omitempty"`
+}
+
+
 
 // PrimaryNetworkStatus defines the observed state of PrimaryNetwork
 type PrimaryNetworkStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+
+	Conditions []
+	
+
+
 }
 
 //+kubebuilder:object:root=true
