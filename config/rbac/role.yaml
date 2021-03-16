@@ -15,6 +15,32 @@ rules:
 - apiGroups:
   - podnetwork.opdev.io
   resources:
+  - additionalnetworks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - additionalnetworks/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - additionalnetworks/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
   - bridges
   verbs:
   - create
@@ -64,6 +90,32 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - primarynetworks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - primarynetworks/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - podnetwork.opdev.io
+  resources:
+  - primarynetworks/status
+  verbs:
+  - get
+  - patch
+  - update
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -71,7 +123,7 @@ kind: Role
 metadata:
   creationTimestamp: null
   name: manager-role
-  namespace: pod-network-operator
+  namespace: cnf-test
 rules:
 - apiGroups:
   - apps
