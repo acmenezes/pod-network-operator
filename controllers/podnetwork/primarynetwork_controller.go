@@ -118,13 +118,14 @@ func (r *PrimaryNetworkReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Complete(r)
 }
 
-func (r *PrimaryNetworkReconciler) updatePrimaryNetworkStatusCondition(Type podnetworkv1alpha1.ConditionType, Status bool, Reason string) error {
+func (r *PrimaryNetworkReconciler) updateConditions(Type podnetworkv1alpha1.ConditionType, Status bool, Reason string) error {
 
 	condition := podnetworkv1alpha1.Condition{}
 
 	condition.Type = Type
 	condition.Status = true
 	condition.Reason = "BeginningReconcileFunction"
+
 	condition.LastHeartbeatTime = ""
 	condition.LastTransitionTime = ""
 
