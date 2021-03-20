@@ -8,7 +8,24 @@ import (
 	"google.golang.org/grpc"
 	corev1 "k8s.io/api/core/v1"
 	cri "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+func listPodsWithMatchingLabels(label string, value string) (*corev1.PodList, error) {
+	// Get the list of pods that have a podNetworkConfig label
+	podList := &corev1.PodList{}
+	var c client.Client
+	err := c.List(context.TODO(), podList, client.MatchingLabels{label: value})
+	if err != nil {
+		fmt.Println(err)
+	}
+	// Pods need to be at least created to proceed
+	// Checking if the list is empty
+	if len(podList.Items) <= 0 {
+		return &corev1.PodList{}, fmt.Errorf("empty pod list")
+	}
+	return podList, nil
+}
 
 func getCRIOConnection() (*grpc.ClientConn, error) {
 

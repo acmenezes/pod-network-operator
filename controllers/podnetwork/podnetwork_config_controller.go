@@ -21,7 +21,6 @@ import (
 	"fmt"
 
 	"github.com/go-logr/logr"
-	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -92,7 +91,7 @@ func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Req
 				// finalizer is present, delete configurations
 
 				// Get the pods with matching labels to podConfig
-				podList, err := r.listPodsWithMatchingLabels()
+				podList, err := listPodsWithMatchingLabels("podNetworkConfig", r.podNetworkConfig.ObjectMeta.Name)
 				if err != nil {
 					return ctrl.Result{}, err
 				}
@@ -117,7 +116,7 @@ func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Req
 			return ctrl.Result{}, nil
 		}
 		// if not being deleted gather the list of pods for each item present on the podnetwork config list by label or annotation
-		podList, err := r.listPodsWithMatchingLabels()
+		podList, err := listPodsWithMatchingLabels("podNetworkConfig", r.podNetworkConfig.ObjectMeta.Name)
 		if err != nil {
 			return ctrl.Result{}, err
 		}
@@ -190,21 +189,6 @@ func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Req
 		}
 	}
 	return ctrl.Result{}, nil
-}
-
-func (r *PodNetworkConfigReconciler) listPodsWithMatchingLabels() (*corev1.PodList, error) {
-	// Get the list of pods that have a podNetworkConfig label
-	podList := &corev1.PodList{}
-	err := r.Client.List(context.TODO(), podList, client.MatchingLabels{"podNetworkConfig": r.podNetworkConfig.ObjectMeta.Name})
-	if err != nil {
-		fmt.Println(err)
-	}
-	// Pods need to be at least created to proceed
-	// Checking if the list is empty
-	if len(podList.Items) <= 0 {
-		return &corev1.PodList{}, fmt.Errorf("empty pod list")
-	}
-	return podList, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

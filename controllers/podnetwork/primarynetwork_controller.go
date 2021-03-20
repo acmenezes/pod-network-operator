@@ -20,11 +20,10 @@ import (
 	"context"
 
 	"github.com/go-logr/logr"
+	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 )
 
 // PrimaryNetworkReconciler reconciles a PrimaryNetwork object
@@ -40,7 +39,15 @@ type PrimaryNetworkReconciler struct {
 //+kubebuilder:rbac:groups=podnetwork.opdev.io,resources=primarynetworks/finalizers,verbs=update
 
 func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = r.Log.WithValues("primarynetwork", req.NamespacedName)
+	reqLogger := r.Log.WithValues("primarynetwork", req.NamespacedName)
+
+	reqLogger.Info("Starting Reconciliation...")
+
+	r.PrimaryNetwork = &podnetworkv1alpha1.PrimaryNetwork{}
+	err := r.Client.Get(context.TODO(), req.NamespacedName, r.PrimaryNetwork)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 
 	// Loop through the list of pods with primary newtworks matching labels
 
