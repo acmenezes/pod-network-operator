@@ -19,6 +19,7 @@ package podnetwork
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/go-logr/logr"
 	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
@@ -53,18 +54,7 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 	// call finalizer on primary network configuration resource
 
 	// update primary network status condition unknown
-
-	condition := podnetworkv1alpha1.Condition{}
-
-	condition.Type = podnetworkv1alpha1.ConditionTypeUnknown
-	condition.Status = true
-	condition.Reason = "BeginningReconcileFunction"
-	condition.LastHeartbeatTime = ""
-	condition.LastTransitionTime = ""
-
-	r.PrimaryNetwork.Status.Conditions = append(r.PrimaryNetwork.Status.Conditions, condition)
-
-	err = r.Client.Status().Update(context.TODO(), r.PrimaryNetwork)
+	err = r.updateConditions(podnetworkv1alpha1.ConditionTypeUnknown, true, "BeginningConfiguration", "Primary pod's interface status is unknown...")
 	if err != nil {
 		reqLogger.Error(err, "Couldn't update Primary Network", "PrimaryNetwork", r.PrimaryNetwork.ObjectMeta.Name)
 		return ctrl.Result{}, err
@@ -118,16 +108,22 @@ func (r *PrimaryNetworkReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Complete(r)
 }
 
-func (r *PrimaryNetworkReconciler) updateConditions(Type podnetworkv1alpha1.ConditionType, Status bool, Reason string) error {
+func (r *PrimaryNetworkReconciler) updateConditions(Type podnetworkv1alpha1.ConditionType, status bool, reason string, message string) error {
 
 	condition := podnetworkv1alpha1.Condition{}
 
 	condition.Type = Type
 	condition.Status = true
-	condition.Reason = "BeginningReconcileFunction"
+	condition.Reason = reason
+	condition.Message = message
 
-	condition.LastHeartbeatTime = ""
-	condition.LastTransitionTime = ""
+	if condition.LastHeartbeatTime == "" {
+		condition.LastHeartbeatTime = time.Now().String()
+		condition.LastTransitionTime = time.Now().String()
+	} else {
+		condition.LastTransitionTime = condition.LastHeartbeatTime
+		condition.LastHeartbeatTime = time.Now().String()
+	}
 
 	r.PrimaryNetwork.Status.Conditions = append(r.PrimaryNetwork.Status.Conditions, condition)
 
