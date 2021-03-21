@@ -56,6 +56,8 @@ spec:
                       type: string
                     lastTransitionTime:
                       type: string
+                    message:
+                      type: string
                     reason:
                       type: string
                     status:
@@ -64,6 +66,27 @@ spec:
                       type: string
                   required:
                   - status
+                  type: object
+                type: array
+              configurations:
+                items:
+                  properties:
+                    currentConfigs:
+                      items:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type: array
+                    podName:
+                      type: string
+                    previousConfigs:
+                      items:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      type: array
+                  required:
+                  - previousConfigs
                   type: object
                 type: array
             type: object
