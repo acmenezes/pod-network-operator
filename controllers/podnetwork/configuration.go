@@ -24,7 +24,7 @@ func (c *Configuration) Configure(pod *corev1.Pod) error {
 
 // The method reset may return configuration to last previous value
 // or delete the configuration entirely depending on its specific use case
-func (c *Configuration) Reset(pod *corev1.Pod) error {
+func (c *Configuration) ResetConfig(pod *corev1.Pod) error {
 	return c.Configurator.Reset(pod)
 }
 
