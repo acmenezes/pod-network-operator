@@ -110,6 +110,8 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		// log Beginning network configuration task
 
 		// Loop through configuration fields requested
+		mtu := Configuration{MTUConfig{vNIC: "eth0", MTU: r.PrimaryNetwork.Spec.MTU}}
+		mtu.Configure(&pod)
 
 		// log configuration item in progress
 
