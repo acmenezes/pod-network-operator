@@ -64,7 +64,11 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 	}
 
 	// update primary network status condition unknown - beginning configuration
-	err = r.updateConditions(podnetworkv1alpha1.ConditionTypeUnknown, true, "BeginningConfiguration", "Primary pod's interface status is unknown...")
+	err = r.updateConditions(podnetworkv1alpha1.ConditionTypeUnknown,
+		true,
+		"BeginningReconciliation",
+		fmt.Sprintf("Verifying PrimaryNetowrk %v status...", r.PrimaryNetwork.ObjectMeta.Name))
+
 	if err != nil {
 		reqLogger.Error(err, "Couldn't update Primary Network's condition", "PrimaryNetwork", r.PrimaryNetwork.ObjectMeta.Name)
 		return ctrl.Result{}, err
@@ -84,13 +88,22 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 			return ctrl.Result{}, nil
 		}
 
-		// update primary network status
+		// update primary network condition for pod
+		err = r.updateConditions(podnetworkv1alpha1.ConditionTypeInProgress,
+			true,
+			"BeginningConfigurationForPod",
+			fmt.Sprintf("PrimaryNetwork %v not being deleted, beginning configuration for pod %v", r.PrimaryNetwork.ObjectMeta.Name, pod.ObjectMeta.Name))
+
+		if err != nil {
+			reqLogger.Error(err, "Couldn't update Primary Network's condition", "PrimaryNetwork", r.PrimaryNetwork.ObjectMeta.Name)
+			return ctrl.Result{}, err
+		}
 
 		// log new primary network configuration requested
 
 		// begin configuration task
 
-		// Beginning network configuration task
+		// log Beginning network configuration task
 
 		// Loop through configuration fields requested
 
