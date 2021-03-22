@@ -52,11 +52,21 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 	}
 
 	// call finalizer on primary network configuration resource
+	finalizer := "primarynetwork.finalizers.podnetwork.opdev.io"
 
-	// update primary network status condition unknown
+	if r.PrimaryNetwork.ObjectMeta.DeletionTimestamp.IsZero() {
+		r.RegisterFinalizer(finalizer)
+	} else {
+		if err != r.ExecuteFinalizer(finalizer, resetConfigs) {
+			return ctrl.Result{}, err
+		}
+		return ctrl.Result{}, nil
+	}
+
+	// update primary network status condition unknown - beginning configuration
 	err = r.updateConditions(podnetworkv1alpha1.ConditionTypeUnknown, true, "BeginningConfiguration", "Primary pod's interface status is unknown...")
 	if err != nil {
-		reqLogger.Error(err, "Couldn't update Primary Network", "PrimaryNetwork", r.PrimaryNetwork.ObjectMeta.Name)
+		reqLogger.Error(err, "Couldn't update Primary Network's condition", "PrimaryNetwork", r.PrimaryNetwork.ObjectMeta.Name)
 		return ctrl.Result{}, err
 	}
 
@@ -106,6 +116,13 @@ func (r *PrimaryNetworkReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&podnetworkv1alpha1.PrimaryNetwork{}).
 		Complete(r)
+}
+
+func resetConfigs(primaryNetwork *podnetworkv1alpha1.PrimaryNetwork) error {
+
+	// logic here TODO
+
+	return nil
 }
 
 func (r *PrimaryNetworkReconciler) updateConditions(Type podnetworkv1alpha1.ConditionType, status bool, reason string, message string) error {
