@@ -63,6 +63,8 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		return ctrl.Result{}, nil
 	}
 
+	reqLogger.Info("PrimaryNetwork not being deleted, beginning reconciliation...")
+
 	// update primary network status condition unknown - beginning configuration
 	err = r.updateConditions(podnetworkv1alpha1.ConditionTypeUnknown,
 		true,
@@ -77,6 +79,7 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 	// Loop through the list of pods with primary newtworks matching labels
 	podList, err := listPodsWithMatchingLabels("PrimaryNetworkConfiguration", r.PrimaryNetwork.ObjectMeta.Name)
 	if err != nil {
+		reqLogger.Error(err, "Couldn't retrieve the list of pods matching labels with ", "label", r.PrimaryNetwork.ObjectMeta.Name)
 		return ctrl.Result{}, err
 	}
 
@@ -84,7 +87,7 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 
 		// if pod is not in running phase return
 		if pod.Status.Phase != "Running" {
-			fmt.Printf("pod %v phase is %v, requeuing... ", pod.ObjectMeta.Name, pod.Status.Phase)
+			reqLogger.Info("Requeuing...", "pod", pod.ObjectMeta.Name, "phase", pod.Status.Phase)
 			return ctrl.Result{}, nil
 		}
 
@@ -92,7 +95,7 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		err = r.updateConditions(podnetworkv1alpha1.ConditionTypeInProgress,
 			true,
 			"BeginningConfigurationForPod",
-			fmt.Sprintf("PrimaryNetwork %v not being deleted, beginning configuration for pod %v", r.PrimaryNetwork.ObjectMeta.Name, pod.ObjectMeta.Name))
+			fmt.Sprintf("Beginning configuration for pod %v", pod.ObjectMeta.Name))
 
 		if err != nil {
 			reqLogger.Error(err, "Couldn't update Primary Network's condition", "PrimaryNetwork", r.PrimaryNetwork.ObjectMeta.Name)
@@ -100,6 +103,7 @@ func (r *PrimaryNetworkReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		}
 
 		// log new primary network configuration requested
+		reqLogger.Info("Beginning configuration for ", "pod", pod.ObjectMeta.Name)
 
 		// begin configuration task
 
