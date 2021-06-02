@@ -17,11 +17,13 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"net"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // Link type for new Pod Interfaces
-type Link struct {
+type LinkAttributes struct {
 	// Device Info configurations
 	NamePrefix string `json:"namePrefix,omitempty"`
 
@@ -59,13 +61,52 @@ type Link struct {
 	CIDR string `json:"cidr,omitempty"`
 }
 
+// AdditionalNetwork for Pod configuration
+type AdditionalNetwork struct {
+	// This name represents the network profile desired for a set of pods
+	// Pods containing the label PodNetworkConfig: with this name will trigger
+	// the controller to add this additional network interface to the pod
+	// Must be a short name with no special characters
+	NetworkName string
+	// NetworkDescription should shortly describe the use for this network
+	NetworkDescription string
+
+	// Intention is to support all Linux Link types
+	// First one being implemented is Veth
+	// Available link types can be found here:
+	// https://man7.org/linux/man-pages/man8/ip-link.8.html
+	Type string
+
+	// Link Attribute (L2) Configurations below is a subset of netlink.LinkAttrs
+
+	// Master device to attach the new network
+	// If it doesn't existe it will be created with default options
+	// If set empty it will set the link as no master link
+	Master string
+	// MTU if set empty it will be set to the default value of the
+	// underlying OS.
+	MTU int
+	// Layer 2 address for the link being created
+	HardwareAddr net.HardwareAddr
+	// Alias for in system symbolic description on the link
+	Alias string
+
+	// Ip or Layer 3 configurations:
+
+	// CIDR is a temporary field to hold an IPv4 range
+	// while we don't have functions acting on an Ipam plugin
+	// Must be in the format "255.255.255.255/32"
+	// Otherwise it will fail
+	CIDR string
+}
+
 // PodNetworkConfigSpec defines the desired state of PodNetworkConfig
 type PodNetworkConfigSpec struct {
 	// Name to match with pod labels
 	Name string `json:"name,omitempty"`
 
 	// List of new links to be configured on Pod
-	Links []Link `json:"links,omitempty"`
+	AdditionalNetworks []AdditionalNetwork `json:"links,omitempty"`
 }
 
 // PodNetworkConfiguration verified configs for status
