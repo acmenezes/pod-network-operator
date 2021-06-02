@@ -1,7 +1,5 @@
 package podnetwork
 
-// configure MTU return Configuration struct
-
 // get pod pid
 
 // get pod namespace
@@ -21,8 +19,6 @@ package podnetwork
 // re-check for interface configuration
 
 // store new configuration in configuration struct
-
-// reset MTU
 
 // configure HardwareAddr
 

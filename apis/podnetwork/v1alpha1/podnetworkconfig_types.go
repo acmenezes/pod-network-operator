@@ -59,24 +59,10 @@ type Link struct {
 	CIDR string `json:"cidr,omitempty"`
 }
 
-// Eth0 is a type to make adjustments on the primary interface
-// provided by the CNI plugin
-type Eth0 struct {
-
-	// for applications that need a specific MTU
-	// setting other then the CNI configured MTU
-	// this will work on a per pod basis
-	// not cluster wide
-	MTU int `json:"mtu,omitempty"`
-}
-
 // PodNetworkConfigSpec defines the desired state of PodNetworkConfig
 type PodNetworkConfigSpec struct {
 	// Name to match with pod labels
 	Name string `json:"name,omitempty"`
-
-	// CNI primary interface adjustments
-	Eth0 Eth0 `json:"eth0,omitempty"`
 
 	// List of new links to be configured on Pod
 	Links []Link `json:"links,omitempty"`
