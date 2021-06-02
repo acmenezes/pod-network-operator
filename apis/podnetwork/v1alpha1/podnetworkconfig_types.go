@@ -63,13 +63,13 @@ type LinkAttributes struct {
 
 // AdditionalNetwork for Pod configuration
 type AdditionalNetwork struct {
-	// This name represents the network profile desired for a set of pods
-	// Pods containing the label PodNetworkConfig: with this name will trigger
-	// the controller to add this additional network interface to the pod
-	// Must be a short name with no special characters
+	// Just a name to identify the network
+	// Must be a short name (15 char) with no special characters
 	NetworkName string `json:"networkName,omitempty"`
 	// NetworkDescription should shortly describe the use for this network
 	NetworkDescription string `json:"networkDescription,omitempty"`
+
+	// Layer 2 configurations:
 
 	// Intention is to support all Linux Link types
 	// First one being implemented is Veth
@@ -102,7 +102,10 @@ type AdditionalNetwork struct {
 
 // PodNetworkConfigSpec defines the desired state of PodNetworkConfig
 type PodNetworkConfigSpec struct {
-	// Name to match with pod labels
+	// This name represents the network profile desired for a set of pods
+	// Pods containing the label PodNetworkConfig: with this name will trigger
+	// the controller to add this additional network interface to the pod
+	// Must be a short name with no special characters
 	Name string `json:"name,omitempty"`
 
 	// List of new links to be configured on Pod
