@@ -22,45 +22,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// Link type for new Pod Interfaces
-type LinkAttributes struct {
-	// Device Info configurations
-	NamePrefix string `json:"namePrefix,omitempty"`
-
-	// Link Layer configurations
-	LinkType string `json:"linkType,omitemtpy"` // temporarily used for veth pair
-	Parent   string `json:"parent,omitemtpy"`   // name for the parent interface
-	Master   string `json:"master,omitempty"`   // name for the master bridge
-	MTU      int    `json:"mtu,omitempty"`
-
-	// For use with the netlink package  may access all types on the ip stack
-	// Index        int                     `json:"index,omitempty"`
-	// MTU          int                     `json:"mtu,omitempty"`
-	// TxQLen       int                     `json:"txqlen,omitempty"` // Transmit Queue Length
-	// HardwareAddr net.HardwareAddr        `json:"hardwareAddr,omitempty"`
-	// Flags        net.Flags               `json:"flags,omitempty"`
-	// RawFlags     uint32                  `json:"rawFlags,omitempty"`
-	// ParentIndex  int                     `json:"parentIndex,omitempty"` // index of the parent link device
-	// MasterIndex  int                     `json:"masterIndex,omitempty"` // must be the index of a bridge
-	// Alias        string                  `json:"alias,omitempty"`
-	// Statistics   *netlink.LinkStatistics `json:"statistics,omitempty"`
-	// Promisc      int                     `json:"promisc,omitempty"`
-	// Xdp          *netlink.LinkXdp        `json:"xdp,omitempty"`
-	// EncapType    string                  `json:"encapType,omitempty"`
-	// Protinfo     *netlink.Protinfo       `json:"protinfo,omitempty"`
-	// OperState    netlink.LinkOperState   `json:"operState,omitempty"`
-	// NumTxQueues  int                     `json:"numTxQueues,omitempty"`
-	// NumRxQueues  int                     `json:"numRxQueues,omitempty"`
-	// GSOMaxSize   uint32                  `json:"gsoMaxSize,omitempty"`
-	// GSOMaxSegs   uint32                  `json:"gsoMaxSegs,omitempty"`
-	// Vfs          []netlink.VfInfo        `json:"vfs,omitempty"` // virtual functions available on link
-	// Group        uint32                  `json:"group,omitempty"`
-	// Slave        netlink.LinkSlave       `json:"slave,omitempty"`
-
-	// Network Layer configurations
-	CIDR string `json:"cidr,omitempty"`
-}
-
 // AdditionalNetwork for Pod configuration
 type AdditionalNetwork struct {
 	// Just a name to identify the network
