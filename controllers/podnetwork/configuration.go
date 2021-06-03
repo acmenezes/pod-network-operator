@@ -39,7 +39,23 @@ type AdditionalNets struct {
 }
 
 func (AdditionalNets) Apply(pod *corev1.Pod) error {
-	// SecondaryNetwork apply logic here
+
+	// 1. Check for existing interfaces with same parameters on pod and return error if so
+
+	// 2. Check for switching / routing master device existence. Create if it doesn't exist.
+
+	// 3. Create the new link.
+
+	// 4. Move one interface to root namespace
+
+	// 5. Setup the master device
+
+	// 6. Set Link up
+
+	// 7. Run connectivity tests
+
+	// 8. Return configuration details (possibly a []map[string]string)
+
 	return nil
 }
 
