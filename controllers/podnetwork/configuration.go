@@ -1,6 +1,7 @@
 package podnetwork
 
 import (
+	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -34,6 +35,7 @@ func (c *Configuration) Get(pod *corev1.Pod) error {
 }
 
 type AdditionalNets struct {
+	NetworkList *[]podnetworkv1alpha1.AdditionalNetwork
 }
 
 func (AdditionalNets) Apply(pod *corev1.Pod) error {
