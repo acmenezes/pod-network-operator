@@ -36,42 +36,52 @@ spec:
           spec:
             description: PodNetworkConfigSpec defines the desired state of PodNetworkConfig
             properties:
-              eth0:
-                description: CNI primary interface adjustments
-                properties:
-                  mtu:
-                    description: for applications that need a specific MTU setting
-                      other then the CNI configured MTU this will work on a per pod
-                      basis not cluster wide
-                    type: integer
-                type: object
-              links:
+              additionalNetworks:
                 description: List of new links to be configured on Pod
                 items:
-                  description: Link type for new Pod Interfaces
+                  description: AdditionalNetwork for Pod configuration
                   properties:
+                    alias:
+                      description: Alias for in system symbolic link description
+                      type: string
                     cidr:
-                      description: Network Layer configurations
+                      description: CIDR is a temporary field to hold an IPv4 range
+                        while we don't have functions acting on an Ipam plugin Must
+                        be in the format "255.255.255.255/32" Otherwise it will fail
+                      type: string
+                    hardwareAddr:
+                      description: Layer 2 address for the link being created
+                      format: byte
                       type: string
                     linkType:
-                      description: Link Layer configurations
+                      description: 'Intention is to support all Linux Link types First
+                        one being implemented is Veth Available link types can be
+                        found here: https://man7.org/linux/man-pages/man8/ip-link.8.html'
                       type: string
                     master:
+                      description: Master device to attach the new network If it doesn't
+                        existe it will be created with default options If set empty
+                        it will set the link as no master link
                       type: string
                     mtu:
+                      description: MTU if set empty it will be set to the default
+                        value of the underlying OS.
                       type: integer
-                    namePrefix:
-                      description: Device Info configurations
+                    networkDescription:
+                      description: NetworkDescription should shortly describe the
+                        use for this network
                       type: string
-                    parent:
+                    networkName:
+                      description: Network Interface name to be used for the additional
+                        network Must be a short name (15 char) with no special characters
                       type: string
-                  required:
-                  - linkType
-                  - parent
                   type: object
                 type: array
               name:
-                description: Name to match with pod labels
+                description: 'This name represents the network profile desired for
+                  a set of pods Pods containing the label PodNetworkConfig: with this
+                  name will trigger the controller to add this additional network
+                  interface to the pod Must be a short name with no special characters'
                 type: string
             type: object
           status:

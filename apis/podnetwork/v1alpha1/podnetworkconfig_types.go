@@ -24,7 +24,7 @@ import (
 
 // AdditionalNetwork for Pod configuration
 type AdditionalNetwork struct {
-	// Just a name to identify the network
+	// Network Interface name to be used for the additional network
 	// Must be a short name (15 char) with no special characters
 	NetworkName string `json:"networkName,omitempty"`
 	// NetworkDescription should shortly describe the use for this network
@@ -71,6 +71,8 @@ type PodNetworkConfigSpec struct {
 
 	// List of new links to be configured on Pod
 	AdditionalNetworks []AdditionalNetwork `json:"additionalNetworks,omitempty"`
+
+	// TODO: packet capture on specified interfaces
 }
 
 // PodNetworkConfiguration verified configs for status
