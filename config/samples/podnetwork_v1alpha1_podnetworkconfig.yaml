@@ -5,5 +5,9 @@ metadata:
   namespace: cnf-telco
 spec:
   Name: podnetwork-sample-a
-  eth0:
-      mtu: 1500
+  additionalNetworks:
+    - networkName: pno
+      networkDescription: "Service to service encrypted communication."
+      linkType: veth
+      master: pnobr0
+      cidr: "192.168.100.0/24"
