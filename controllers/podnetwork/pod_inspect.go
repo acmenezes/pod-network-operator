@@ -4,21 +4,38 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"google.golang.org/grpc"
 	corev1 "k8s.io/api/core/v1"
 	cri "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/config"
 )
 
 func listPodsWithMatchingLabels(label string, value string) (*corev1.PodList, error) {
 	// Get the list of pods that have a podNetworkConfig label
-	podList := &corev1.PodList{}
-	var c client.Client
-	err := c.List(context.TODO(), podList, client.MatchingLabels{label: value})
+	// podList := &corev1.PodList{}
+	// var c client.Client
+	// err := c.List(context.TODO(), podList, client.MatchingLabels{label: value})
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	cl, err := client.New(config.GetConfigOrDie(), client.Options{})
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("failed to create client")
+		os.Exit(1)
 	}
+
+	podList := &corev1.PodList{}
+
+	err = cl.List(context.Background(), podList, client.MatchingLabels{label: value})
+	if err != nil {
+		fmt.Printf("failed to list pods matching labels: %v\n", err)
+		os.Exit(1)
+	}
+
 	// Pods need to be at least created to proceed
 	// Checking if the list is empty
 	if len(podList.Items) <= 0 {
