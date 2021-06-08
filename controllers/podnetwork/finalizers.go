@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-func (r *PodNetworkConfigReconciler) Finalizer(finalizer string) error {
+func (r *PodNetworkConfigReconciler) Finalizer(finalizer string) (bool, error) {
 
 	// examine DeletionTimestamp to determine if podConfig is under deletion
 	if r.podNetworkConfig.ObjectMeta.DeletionTimestamp.IsZero() {
@@ -16,27 +16,32 @@ func (r *PodNetworkConfigReconciler) Finalizer(finalizer string) error {
 		if !containsString(r.podNetworkConfig.GetFinalizers(), finalizer) {
 			r.podNetworkConfig.SetFinalizers(append(r.podNetworkConfig.GetFinalizers(), finalizer))
 			if err := r.Update(context.Background(), r.podNetworkConfig); err != nil {
-				return err
+				return false, err
 			}
-		} else {
-			// podNetworkConfig is being deleted
-			if containsString(r.podNetworkConfig.GetFinalizers(), finalizer) {
-				podList, err := listPodsWithMatchingLabels("podNetworkConfig", r.podNetworkConfig.ObjectMeta.Name)
-				if err != nil {
-					return err
-				}
-				for _, pod := range podList.Items {
+		}
+		return false, nil
+	} else {
+		// podNetworkConfig is being deleted
+		if containsString(r.podNetworkConfig.GetFinalizers(), finalizer) {
+			podList, err := listPodsWithMatchingLabels("podNetworkConfig", r.podNetworkConfig.ObjectMeta.Name)
+			if err != nil {
+				return true, err
+			}
+			for _, pod := range podList.Items {
 
-					// Deleting all veth additional networks
-					Veth := Configuration{&Veth{}}
-					Veth.Delete(pod, *r.podNetworkConfig)
+				// Deleting all veth additional networks
+				Veth := Configuration{&Veth{}}
+				Veth.Delete(pod, *r.podNetworkConfig)
 
-				}
+			}
+			// remove our finalizer from the list and update it.
+			r.podNetworkConfig.SetFinalizers(removeString(r.podNetworkConfig.GetFinalizers(), finalizer))
+			if err := r.Update(context.Background(), r.podNetworkConfig); err != nil {
+				return true, err
 			}
 		}
 	}
-
-	return nil
+	return true, nil
 }
 
 // Helper functions to check and remove string from a slice of strings.
