@@ -14,13 +14,6 @@ import (
 )
 
 func listPodsWithMatchingLabels(label string, value string) (*corev1.PodList, error) {
-	// Get the list of pods that have a podNetworkConfig label
-	// podList := &corev1.PodList{}
-	// var c client.Client
-	// err := c.List(context.TODO(), podList, client.MatchingLabels{label: value})
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
 
 	cl, err := client.New(config.GetConfigOrDie(), client.Options{})
 	if err != nil {
@@ -30,6 +23,7 @@ func listPodsWithMatchingLabels(label string, value string) (*corev1.PodList, er
 
 	podList := &corev1.PodList{}
 
+	// Get the list of pods that have a podNetworkConfig label
 	err = cl.List(context.Background(), podList, client.MatchingLabels{label: value})
 	if err != nil {
 		fmt.Printf("failed to list pods matching labels: %v\n", err)

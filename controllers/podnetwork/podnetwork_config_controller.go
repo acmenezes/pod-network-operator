@@ -61,7 +61,11 @@ func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Req
 
 	// TODO: Update the status field with conditions while creating the new instance
 
-	// Finalizer logic here
+	// Setting finalizers or deleting configs for CRs under deletion
+	err = r.Finalizer("podnetworkconfig.finalizers.opdev.io")
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 
 	// if not being deleted gather the list of pods for each item present on the podnetwork config list by label or annotation
 	podList, err := listPodsWithMatchingLabels("podNetworkConfig", r.podNetworkConfig.ObjectMeta.Name)

@@ -71,8 +71,6 @@ type PodNetworkConfigSpec struct {
 
 	// List of new links to be configured on Pod
 	AdditionalNetworks []AdditionalNetwork `json:"additionalNetworks,omitempty"`
-
-	// TODO: packet capture on specified interfaces
 }
 
 // PodNetworkConfiguration verified configs for status
