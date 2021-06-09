@@ -39,7 +39,12 @@ type BridgeSpec struct {
 	// txqueuelen  txqlen  -- specify length of transmit queue
 
 	// Network layer configs
-	IPAddress string `json:"ipAddress,omitempty"`
+
+	// CIDR is a temporary field to hold an IPv4 range
+	// while we don't have functions acting on an Ipam plugin
+	// Must be in the format "255.255.255.255/32"
+	// Otherwise it will fail
+	CIDR string `json:"cidr,omitempty"`
 }
 
 // BridgePhase for status

@@ -24,6 +24,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 	podnetworkv1alpha1 "github.com/opdev/pod-network-operator/apis/podnetwork/v1alpha1"
 )
 
@@ -32,6 +33,7 @@ type BridgeReconciler struct {
 	client.Client
 	Log    logr.Logger
 	Scheme *runtime.Scheme
+	bridge v1alpha1.Bridge
 }
 
 // +kubebuilder:rbac:groups=podnetwork.opdev.io,resources=bridges,verbs=get;list;watch;create;update;patch;delete
@@ -48,9 +50,30 @@ type BridgeReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.7.0/pkg/reconcile
 func (r *BridgeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = r.Log.WithValues("bridge", req.NamespacedName)
+	reqLogger := r.Log.WithValues("bridge", req.NamespacedName)
 
-	// your logic here
+	// Get the list of all pod network configurations to be applied
+	reqLogger.Info("loading additional Linux bridges")
+
+	r.bridge = v1alpha1.Bridge{}
+	err := r.Client.Get(context.TODO(), req.NamespacedName, &r.bridge)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	// Setting finalizers or deleting configs for CRs under deletion
+	isBeingDeleted, err := r.Finalizer("podnetworkconfig.finalizers.opdev.io")
+	if err != nil {
+		return ctrl.Result{}, err
+	} else if isBeingDeleted {
+		return ctrl.Result{}, nil
+	}
+
+	br := Bridger{}
+	err = br.Apply(r.bridge)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }
