@@ -85,7 +85,7 @@ func (r *PodNetworkConfigReconciler) Reconcile(ctx context.Context, req ctrl.Req
 		// begin to reconcile each config element present on the pod network config for each pod with the appropriate annotation or label
 
 		// Adding new Veth network interfaces according to additionalNetworks list
-		Veth := Configuration{&Veth{}}
+		Veth := Link{&Veth{}}
 		Veth.Apply(pod, *r.podNetworkConfig)
 
 	}

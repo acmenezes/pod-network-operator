@@ -30,7 +30,7 @@ func (r *PodNetworkConfigReconciler) Finalizer(finalizer string) (bool, error) {
 			for _, pod := range podList.Items {
 
 				// Deleting all veth additional networks
-				Veth := Configuration{&Veth{}}
+				Veth := Link{&Veth{}}
 				Veth.Delete(pod, *r.podNetworkConfig)
 
 			}

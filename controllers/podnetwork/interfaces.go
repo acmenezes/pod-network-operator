@@ -33,3 +33,28 @@ func (c *Configuration) Delete(pod corev1.Pod, podNetworkConfig podnetworkv1alph
 func (c *Configuration) Get(pod corev1.Pod, podNetworkConfig podnetworkv1alpha1.PodNetworkConfig) error {
 	return c.Configurator.Get(pod, podNetworkConfig)
 }
+
+type Linker interface {
+	Apply(corev1.Pod, podnetworkv1alpha1.PodNetworkConfig) error
+	Delete(corev1.Pod, podnetworkv1alpha1.PodNetworkConfig) error
+	Get(corev1.Pod, podnetworkv1alpha1.PodNetworkConfig) error
+}
+
+type Link struct {
+	Linker Linker
+}
+
+// The method Apply applies a new configuration for pods
+func (c *Link) Apply(pod corev1.Pod, podNetworkConfig podnetworkv1alpha1.PodNetworkConfig) error {
+	return c.Linker.Apply(pod, podNetworkConfig)
+}
+
+// The method Delete removes configuration applied to pods
+func (c *Link) Delete(pod corev1.Pod, podNetworkConfig podnetworkv1alpha1.PodNetworkConfig) error {
+	return c.Linker.Delete(pod, podNetworkConfig)
+}
+
+// The method Get brings back the CR/Object instance applied to a pod
+func (c *Link) Get(pod corev1.Pod, podNetworkConfig podnetworkv1alpha1.PodNetworkConfig) error {
+	return c.Linker.Get(pod, podNetworkConfig)
+}
