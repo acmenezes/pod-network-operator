@@ -11,7 +11,7 @@ What if we can add a service to our operator hub that can provide all of that? T
 
 ### Scope
 
-The scope of this project is network configuration and tuning at the pod level specially designed with CNF multi-tenant environments in mind. For that to be accomplished any <b>host level</b> configuration will be performed on behalf of the pods where it makes sense without disrupting the main CNI plugin used by the cluster, the main routing table on the host and the rules published on iptables by the current kube-proxy workload or other CNI related pieces of software. This behavior on the host of not overriding anything created by the main CNI plugin may be changed as an optional feature but not a default one.
+The scope of this project is network configuration and tuning at the pod level specially designed with CNF multi-tenant environments in mind. For that to be accomplished any <b>host level</b> configuration will be performed on behalf of the pods where it makes sense without disrupting the main CNI plugin used by the cluster, the main routing table on the host and the rules published on iptables by the current kube-proxy workload or other CNI related pieces of software. This behavior on the host of not overriding anything created by the main CNI plugin may be changed as an optional feature but not a default one for the moment.
 
 #### That said What this operator is not:
 
