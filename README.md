@@ -1,34 +1,43 @@
 # Pod Network Operator
-
-This project is an attempt to solve various CNF and Telco networking challenges that can't be addressed quickly by the upstream Kubernetes community and make it available in both OpenShift and Kubernetes.
-
+## Open Source Innovative Kubernetes Networking for Pods
 ---
-#### Warning
-> This is an in progress development. This operator is in its early stages. An MVP on this operator is under development and will be published soon.
----
+### Abstract
 
-### Design Proposal
-#### Motivation
+Computing is being pushed to the edge, internet of things is becoming a reality and containerized multi-tenant platforms are the base for a hybrid cloud, multi-services, multi-partners serving the resources for those workloads. Services are a much stronger business drivers when they are packed together in a solid way in the same point of delivery or platform. Operators demonstrated their strength gaining immense space both on CNCF through the [Operator Framework](https://www.cncf.io/projects/) being accepted as an incubating project and growing number of operators on the operator hubs putting services side by side for kubernetes distributions. Finally the raise of 5G networks, an intricate technology connecting multiple of those layers together come to the table.
 
-Multiple networking challenges faced by Telco companies and Internet Service Providers working on 5G networks as well as other CNF driven solutions are not addressed by current working Kubernetes CNI standard. Some work is being done to address some of those challenges to be generally available in the long run. This operator aims at short-term solutions for a few use cases that can be solved by a kubernetes operator quickly given the cloud native nature of those while waiting for the official upstream solutions in the long run. It's NOT intended to replace the CNI plugins in any way. Its intention is to enable businesses as fast as we can while we don't have an official long-term solution.
+With those elements being painted on the scenario the need for more dynamic, flexible and intelligent networks capable of making changes or scheduling resources based on telemetry data becomes something real. Being able to create networks on the fly and delete them as a 5G call terminates, slice networks through multiple hops to separate traffic, classify packets and traffic and treat them accordingly, schedule resources according to network latency are some of the challenges that we aim to solve with this project.
 
-#### Some of those challenges are:
+The goal of the pod-network-operator is to experiment, try and test innovative and alternative ways to do networking, while maintaining compatibility with the the K8s constructs and network requirements (e.g. no NAT for pod-to-pod communication, etc).
 
-- Runtime network configurations dynamically triggered by CNF applications
-- Use of not so common protocols such as SCTP and its configuration on host
-- Use of protocols or configurations not implemented by CNI plugins but offered by Linux
-- Separation of those configurations and respective permissions per tenant
-- A centralized point to monitor and configure pod networking without tenant access and completely secured at a host's administrative level
-- Protect the actual CNI plugin in place on the host as well as the Linux host networking from possible disruptive proprietary tenant's software at host level.
-- Have a common open source repository that can bring all partners to contribute together on a common solution for all those problems
+#### Dynamic Network Use Case
 
-#### Scope
+IoT and Edge computing are changing the way we communicate, make business, travel, use our homes. Ultimately the way we live. The devices like smartphones, smart cars, multiple types of sensors used from industrial facilities to smart home appliances generate pretty different types of traffic.
 
-The scope of this project is network configuration, monitoring and tuning at the pod level specially designed with CNF multi-tenant environments in mind. For that to be accomplished any host level configuration will be performed on behalf of the pods where it makes sense without disrupting the main CNI plugin used by the cluster, the main routing table on the host and the rules published on iptables by the current kube-proxy workload or other CNI related pieces of software.
+So being able to allocate and remove networks dynamically, at runtime, on demand according to parameters such as bandwidth, latency, jitter effect, real time requirements, type of devices and orchestrating multiple of those networks across multiple layers on distributed topologies is the central point of our endeavor. Refining the requirements and experimenting with new solutions for dynamic intelligent networks is our common theme here.
+
+#### Security Use Case as a Side Effect
+
+<b>A Note on Linux Capabilities and Privilege Delegation</b>
+
+CNF applications often need to deal with additional network configuration and usage in many different ways depending on the application and vendor. That almost always requires privileges on the network level. May it be a Linux capability like CAP_NET_ADMIN or even running some init container or sidecar container under the root user to perform configurations that the application wouldn't be able to do so without the privileges.
+
+When we step in the multi-tenant platforms domain, the privileges associated with those applications are completely undesired and often questioned if they shouldn't be removed from those applications. That brings us to the second key point on the pod-network-operator strategy: abstracting the need for privileges by hiding any implementation details from the end user.
+
+When configuring additional networks with special purposes with an specific feature in mind it often DOESN'T suffice to perform one task alone. It's necessary to run multiple tasks from interface creation, configuration and connection to routing rules or vlan tagging for example. That set of tasks may require CAP_NET_ADMIN, CAP_NET_BIND and CAP_NET_RAW together to be able to accomplish a single goal given that each capability will have its own set of possible privileged tasks for example. Those often need to be combined together to achieve the results required by the business.
+
+Our primary goal is <b>NOT</b> to delegate any specific Linux capability privilege to an operator or mapping specific implementation tasks or set of tasks to an API in order to delegate privileges. Instead simple abstracted APIs hiding implementation details should be the way to go as we are looking for business needs that can be solved for the broader community. Understanding the actual missing features behind the privileges and capabilities, offering a clean, solid and long living solution on behalf of the whole community is key here. So the goal is abstracting implementation details while allowing for multiple possible implementations for the same abstraction. And with that solve the need for privileges as a side effect. In other words it's <b>NOT</b> about automating Linux security features but enabling businesses to have faster, dynamic and more intelligent networking on Kubernetes that can be easily configured and used without elevated privileges.
+
+A few sections below we have a very good example of what we're talking about: <I>Kubernetes Network Profiles</I>.
+
+That said, in order to make networking configurations on behalf of an arbitrary pod some privileges are required to be used by the pod-network-operator. Those privileges are needed for both pod and host level configurations. Host level configurations required to complete connectivity to, from or between pods will always demand privileged actions even with Linux user namespaces landing on Kubernetes or using different container technologies such as Kata Containers. That puts pod-network-operator on the category of a trusted privileged platform service for all tenants.
+
+### Scope
+
+Given the goals we have we need to delimit scope. The scope of this project is network configuration and tuning at the pod level specially designed with CNF multi-tenant environments in mind. For that to be accomplished any <b>host level</b> configuration will be performed on behalf of the pods where it makes sense without disrupting the main CNI plugin used by the cluster, the main routing table on the host and the rules published on iptables by the current kube-proxy workload or other CNI related pieces of software. This behavior on the host of not overriding anything created by the main CNI plugin may be changed as an optional feature but not a default one for the moment.
 
 #### That said What this operator is not:
 
-This operator is NOT intended to configure anything cluster wide that affects all pods or an entire node behavior with that intent. Those tasks are already performed by a set of operators such as the ones below:
+This operator is NOT intended to configure anything cluster wide that affects all pods or an entire node behavior with that intent. Those tasks are already performed by a set of operators such as the ones below, but not limited to them:
 
 - `Machine Config Operator` - https://github.com/openshift/machine-config-operator
 - `Performance Addons Operator` - https://github.com/openshift-kni/performance-addon-operators
@@ -36,25 +45,25 @@ This operator is NOT intended to configure anything cluster wide that affects al
 - `Special Resource Operator` - https://github.com/openshift-psap/special-resource-operator
 - `Node Feature Discovery Operator` - https://github.com/openshift/cluster-nfd-operator
 
-This operator is NOT intended to own specific application deployments, daemonsets, statefulsets or any other application workloads that may result in pods or replicas. It SHOULD own only the configurations it provides gracefully terminating them when a Pod terminates, when the identifying label is deleted or when an entire or partial network configuration object is deleted.
-Security Concerns
 
-In order to make networking configurations on behalf of a pod some privileges must be in place available to the operator making those. Those privileges are needed for both pod and host level configs at this moment. Even with linux user namespaces, that will come in the future, it won't be possible to contain workload privileges if host level configurations are needed. And this imposes a privileged workload to take care of those tasks on behalf of pods. That may perfectly be an operator.
+This operator is also NOT intended to own specific application deployments, daemonsets, statefulsets or any other application workloads that may result in pods or replicas. It SHOULD own only the configurations it provides gracefully terminating them when a Pod terminates, when the identifying label is deleted or when an entire or partial network configuration object is deleted.
 
-That said, the pod network operator should remain in a separate kubernetes namespace and all its RBAC resources should be separated on that kubernetes namespace as well to prevent any tenant from using them in the first place.
 
-Network configurations will be defined in CRDs and can be seen by all tenants, but can only be used by those who have the proper RBAC permissions for that. No tenant will be able to change them. Only cluster admins.
+#### Road Map and Desired Features
 
-#### Why an Operator?
+    Kubernetes Network Profiles
 
-OpenShift nodes are managed by Kubernetes operators. The operators take care of multiple disciplines on OCP nodes. That means that all those configurations are repeatable, reconcilable and visible in a cloud native way via the Kubernetes API extensions.
+    SRv6
 
-Any architecture that doesn't comply with that standard will have a hard time adapting to OCP's premises. Normally it won't be seen as a cloud native/container native way of managing the platform and will most probably bring a lot more work with it since it doesn't inherit all the already proven goods that come from the Kubernetes API itself.
-Here below I put an extract with common features that we gain from using CRDs within kubernetes when we develop using the operator pattern.
-Extracted from https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/.
-Beyond all those good features from the extending the kubernetes API we still have the advantage of using the Operator Framework that will give us right away an embedded metrics endpoint to expose the metrics retrieved by the reconciler process as well as all the tooling to seamlessly publish this operator using OLM (Operator Lifecycle Manager) that is already native in OpenShift.
+    Service Chaining
 
-#### Architecture
+    Containerized VRFs
+
+    Dynamic Routing Protocols
+
+    Containerized End to End Tunnels
+
+#### Operator Architectural Design Proposal
 
 #### Overview:
 
@@ -99,7 +108,6 @@ When it comes to the host it's the same process. We move to PID number 1 and the
 
 For the reconciler function itself it will depend on the logic and configurations that we're trying to achieve. Each different configuration object may require different libraries to perform the configurations.
 
-#### Conclusion
+#### Contribution
 
-We hope this design covers the lack of attention that very special applications in the Telecom and Edge computing domain may require for their next generation containerized cloud native initiatives.
-
+Community meetings, slack channel and YouTube channel coming soon.
