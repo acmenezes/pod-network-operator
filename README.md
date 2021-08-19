@@ -7,7 +7,7 @@ Computing is being pushed to the edge, internet of things is becoming a reality 
 
 With those elements being painted on the scenario the need for more dynamic, flexible and intelligent networks capable of making changes or scheduling resources based on telemetry data becomes something real. Being able to create networks on the fly and delete them as a 5G call terminates, slice networks through multiple hops to separate traffic, classify packets and traffic and treat them accordingly, schedule resources according to network latency are some of the challenges that we aim to solve with this project.
 
-The goal of the pod-network-operator is to experiment, try and test innovative ways to do networking, basically re-inventing Kubernetes networking, if we can put like that, for the new tech community writing this chapter in history.
+The goal of the pod-network-operator is to experiment, try and test innovative and alternative ways to do networking, while maintaining compatibility with the the K8s constructs and network requirements (e.g. no NAT for pod-to-pod communication, etc).
 
 #### Dynamic Network Use Case
 
